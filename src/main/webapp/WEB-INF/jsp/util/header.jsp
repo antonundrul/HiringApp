@@ -22,7 +22,7 @@
 
             <sec:authentication var="userLogin" property="principal" />
 
-            <sec:authorize access="isAuthenticated() && !hasAuthority('ROLE_ADMIN')">
+           <%-- <sec:authorize access="isAuthenticated() && !hasAuthority('ROLE_ADMIN')">
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 
@@ -36,8 +36,8 @@
                         <li><a class="dropdown-item" href="${contextPath}/logout">Выйти</a></li>
                     </ul>
                 </div>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_ADMIN')">
+            </sec:authorize>--%>
+            <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_USER')">
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
 

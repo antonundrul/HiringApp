@@ -41,6 +41,19 @@ public class UserController {
         return "/user/userPersonalCabinet";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
+    @GetMapping("/profile/{id}")
+    public String getPersonalCabinet(Model model,
+                                     @PathVariable (name = "id") Long id) {
+
+
+
+        UserDTO userDto = userService.findById(id);
+
+        model.addAttribute("user", userDto);
+        return "/user/userPersonalCabinet";
+    }
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/update-user")
     public String updateUser(@Validated @ModelAttribute("user") UserDTO userDto,
@@ -62,7 +75,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public ModelAndView findAllUsers() {
         ModelAndView modelAndView = new ModelAndView();

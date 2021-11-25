@@ -61,11 +61,11 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?block=1">${user.blocked == 1 ? "Разблокировать" : "Заблокировать"}</a></li>
+                                <li><a class="dropdown-item" href="${contextPath}/chats/${user.id}">Написать</a></li>
                                 <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?seller=1">Добавить/удалить права продавца</a></li>
                                 <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?admin=1">Добавить/удалить права администратора</a></li>
                             </ul>
                         </div>
-
                     </td>
                 </tr>
             </c:forEach>
