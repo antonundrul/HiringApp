@@ -128,4 +128,10 @@ public class ChatServiceImpl implements ChatService {
 
         return chatMapper.toDto(result);
     }
+
+    @Override
+    public void delete(Long id) {
+        Chat chat = chatRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        chatRepository.delete(chat);
+    }
 }

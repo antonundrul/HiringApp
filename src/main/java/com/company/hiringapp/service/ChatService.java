@@ -26,4 +26,5 @@ public interface ChatService {
 
     ChatDTO findByUsers(Long firstUserId, Long secondUserId);
 
+    void delete(Long id);
 }

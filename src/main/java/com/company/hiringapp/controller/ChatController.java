@@ -10,7 +10,6 @@ import com.company.hiringapp.service.ChatService;
 import com.company.hiringapp.service.MessageService;
 import com.company.hiringapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,9 +51,9 @@ public class ChatController {
         this.userMapper=userMapper;
     }
 
-    @GetMapping("/chats/{toUser}")
-    public ModelAndView getChat(@PathVariable(name = "toUser") Long toUserId,
-                                Principal principal){
+
+    @GetMapping("/chats")
+    public ModelAndView getChats(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("chat/chats");
@@ -62,19 +61,31 @@ public class ChatController {
 
         HashMap<UserDTO,ChatDTO> chats = chatService.getChats(userDTO);
         modelAndView.addObject("chats",chats);
-        modelAndView.addObject("toUserId",toUserId);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/chats/chatWith/{toUser}")
+    public ModelAndView getMessages(@PathVariable(name = "toUser") Long toUserId,
+                                Principal principal){
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("chat/chatWith");
+        UserDTO userDTO = userService.findByUsername(principal.getName());
+        UserDTO toUserDTO = userService.findById(toUserId);
+
+        HashMap<UserDTO,ChatDTO> chats = chatService.getChats(userDTO);
+        modelAndView.addObject("chats",chats);
+        modelAndView.addObject("toUser",toUserDTO);
         modelAndView.addObject("messageForm",new MessageDTO());
         ChatDTO chatDTO = chatService.findByUsers(userDTO.getId(),toUserId);
-        if(chatDTO!=null) {
+        if(chatDTO.getId()!=null) {
             modelAndView.addObject("messages", messageService.findByChat(chatDTO));
-        }
-        else{
-            
         }
         return modelAndView;
     }
 
-    @PostMapping("/chats/{toUser}")
+    @PostMapping("/chats/chatWith/{toUser}")
     public String sendMessage(@PathVariable(name = "toUser") Long toUserId,
                                 Model model,
                                 @Validated @ModelAttribute("messageForm") MessageDTO messageDTO,
@@ -82,14 +93,35 @@ public class ChatController {
                                 Principal principal){
 
         UserDTO userDTO = userService.findByUsername(principal.getName());
-        UserDTO toUser = userService.findById(toUserId);
         ChatDTO chat = chatService.findByUsers(toUserId,userDTO.getId());
-        messageDTO.setChat(chat);
+        if(chat.getId()==null) {
+            ChatDTO newChat = new ChatDTO(userDTO, userService.findById(toUserId));
+            chatService.save(newChat);
+
+            newChat = chatService.findByUsers(userDTO.getId(),toUserId);
+            messageDTO.setChat(newChat);
+        }
+        else {
+            messageDTO.setChat(chat);
+        }
         messageDTO.setSender(userDTO);
         messageDTO.setSendDateTime(LocalDateTime.now());
         messageService.save(messageDTO);
 
 
-        return redirectTo("chats/"+toUserId);
+        return redirectTo("chats/chatWith/"+toUserId);
+    }
+
+    @GetMapping("/chats/delete/{id}")
+    public String delete(@PathVariable Long id, Principal principal) {
+        UserDTO userDTO = userService.findByUsername(principal.getName());
+        ChatDTO chatDTO = chatService.findByUsers(userDTO.getId(), id);
+
+        List<MessageDTO> messages = messageService.findByChat(chatDTO);
+                for(MessageDTO message:messages){
+                    messageService.delete(message.getId());
+                }
+        chatService.delete(chatDTO.getId());
+        return redirectTo("chats");
     }
 }

@@ -30,6 +30,8 @@ public class User extends AbstractEntity {
     private String email;
     @Column(columnDefinition = "smallint")
     private Integer blocked;
+    /*@Column(name = "avatar")
+    private String avatar;*/
 
     /*@ManyToMany(mappedBy = "observers")
     private List<Parcel> parcels;*/

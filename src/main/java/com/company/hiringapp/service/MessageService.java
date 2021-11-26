@@ -22,5 +22,4 @@ public interface MessageService {
     List<MessageDTO> findBySender(UserDTO senderDto);
 
 
-
 }

@@ -10,7 +10,9 @@
            </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="${contextPath}/" class="nav-link px-2 text-white">Главная</a></li>
-
+                <sec:authorize access="isAuthenticated()">
+                    <li><a href="${contextPath}/chats" class="nav-link px-2 text-white">Мои диалоги</a></li>
+                </sec:authorize>
                 <li><a href="${contextPath}/about" class="nav-link px-2 text-white">О нас</a></li>
 
             </ul>
@@ -37,7 +39,7 @@
                     </ul>
                 </div>
             </sec:authorize>--%>
-            <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_USER')">
+            <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_ADMIN')">
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
 

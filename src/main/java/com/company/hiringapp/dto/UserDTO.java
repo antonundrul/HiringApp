@@ -20,6 +20,7 @@ public class UserDTO extends AbstractDTO {
     private String email;
     //    private List<ParcelDTO> parcels;
     private Integer blocked;
+//    private String avatar;
 
 /*
     private MultipartFile imageUpdate;
