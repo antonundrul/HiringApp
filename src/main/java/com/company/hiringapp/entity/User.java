@@ -3,6 +3,7 @@ package com.company.hiringapp.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -30,8 +31,8 @@ public class User extends AbstractEntity {
     private String email;
     @Column(columnDefinition = "smallint")
     private Integer blocked;
-    /*@Column(name = "avatar")
-    private String avatar;*/
+    @Column(name = "avatar")
+    private String avatar;
 
     /*@ManyToMany(mappedBy = "observers")
     private List<Parcel> parcels;*/

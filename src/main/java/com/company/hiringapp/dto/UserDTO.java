@@ -1,6 +1,7 @@
 package com.company.hiringapp.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Null;
 import java.util.Set;
@@ -20,7 +21,7 @@ public class UserDTO extends AbstractDTO {
     private String email;
     //    private List<ParcelDTO> parcels;
     private Integer blocked;
-//    private String avatar;
+    private String avatar;
 
 /*
     private MultipartFile imageUpdate;

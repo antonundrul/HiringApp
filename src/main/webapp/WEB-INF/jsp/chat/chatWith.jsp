@@ -66,10 +66,11 @@
 
                                         <a href="${contextPath}/chats/chatWith/${chat.key.id}" style="color: black">
                      <span class="chat-img pull-left">
-                     <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar" class="img-circle">
+                     <img src="${contextPath}/resources/images/${chat.key.avatar}" alt="User Avatar" class="img-circle">
                      </span>
                                         <div class="chat-body clearfix">
                                             <div class="header_sec">
+
                                                 <strong class="primary-font">${chat.key.firstName} ${chat.key.lastName}</strong>
                                                 <p class="pull-right">${chat.value.messages.get(chat.value.messages.size()-1).sendDateTime.toLocalTime()}</p>
                                             </div>
@@ -89,10 +90,16 @@
                 <div class="col-sm-9 message_section">
                     <div class="row">
                         <div class="new_message_head">
-                            <div class="pull-left"><h3><i class="fa fa-plus-square-o" aria-hidden="true"></i> ${toUser.firstName} ${toUser.lastName}</h3></div><div class="pull-right"><div class="dropdown">
+                            <div class="pull-left">
+                                 <span class="chat-img pull-left">
+                                <img src="${contextPath}/resources/images/${toUser.avatar}" alt="User Avatar" class="img-circle">
+                                 </span>
+                                     <h3> ${toUser.firstName} ${toUser.lastName}</h3>
+                            </div>
+                            <div class="pull-right"><div class="dropdown">
                             <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-cogs" aria-hidden="true"></i>  Setting
-                                <span class="caret"></span>
+<%--                                <span class="caret"></span>--%>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
                                 <li><a href="#">Action</a></li>
@@ -109,7 +116,7 @@
                     <c:when test="${message.sender.id}==${toUser.id}">
                                 <li class="left clearfix">
                      <span class="chat-img1 pull-left">
-                     <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar" class="img-circle">
+                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>
@@ -120,7 +127,7 @@
                     <c:otherwise>
                                 <li class="left clearfix admin_chat">
                      <span class="chat-img1 pull-right">
-                     <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar" class="img-circle">
+                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>

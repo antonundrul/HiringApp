@@ -24,11 +24,11 @@
 
             <sec:authentication var="userLogin" property="principal" />
 
-           <%-- <sec:authorize access="isAuthenticated() && !hasAuthority('ROLE_ADMIN')">
+            <sec:authorize access="isAuthenticated() && !hasAuthority('ROLE_ADMIN')">
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 
-                        <img src="/resources/images/user.png" alt="userImg" width="50" height="50" class="rounded-circle">
+                    <img src="/resources/images/user.png" alt="userImg" width="50" height="50" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                         <li><a class="dropdown-item" href="#">Логин: ${userLogin.username}</a></li>
@@ -38,7 +38,7 @@
                         <li><a class="dropdown-item" href="${contextPath}/logout">Выйти</a></li>
                     </ul>
                 </div>
-            </sec:authorize>--%>
+            </sec:authorize>
             <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_ADMIN')">
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
