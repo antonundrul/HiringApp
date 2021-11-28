@@ -1,15 +1,15 @@
 package com.company.hiringapp.repository;
 
-import com.company.hiringapp.entity.Currency;
+import com.company.hiringapp.entity.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CurrencyRepository extends JpaRepository<Currency, Long> {
+public interface SkillRepository extends JpaRepository<Skill,Long> {
     @Override
-    Optional<Currency> findById(Long id);
+    Optional<Skill> findById(Long id);
 
-    Currency findByCode(String code);
+    Optional<Skill> findByName(String name);
 }
