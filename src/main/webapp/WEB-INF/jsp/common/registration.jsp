@@ -19,7 +19,7 @@
 <main role="main" class="form-signin text-center">
 
 
-<form:form method="POST" modelAttribute="userForm" >
+<form:form method="POST" modelAttribute="userForm" enctype="multipart/form-data">
 
     <img class="mb-4 mx-auto d-block" src="${contextPath}/resources/images/logo.png" alt="" width="100" height="100">
     <h2 class="form-signin-heading">Создать аккаунт</h2>

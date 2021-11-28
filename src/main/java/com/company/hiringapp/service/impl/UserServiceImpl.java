@@ -5,6 +5,7 @@ package com.company.hiringapp.service.impl;
 import com.company.hiringapp.dto.PageWrapper;
 import com.company.hiringapp.dto.SignUpRequest;
 import com.company.hiringapp.dto.UserDTO;
+import com.company.hiringapp.dto.UserDTOwithPhoto;
 import com.company.hiringapp.dto.mapper.UserMapper;
 import com.company.hiringapp.entity.User;
 import com.company.hiringapp.exception.ResourceNotFoundException;
@@ -19,7 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -106,6 +110,13 @@ public class UserServiceImpl implements UserService {
         dto.setEmail(userDto.getEmail());
         dto.setFirstName(userDto.getFirstName());
         dto.setLastName(userDto.getLastName());
+        dto.setAvatar(userDto.getAvatar());
+
+
+
+
+
+
        /* try {
             dto.setImage(userDto.getImageUpdate().getBytes());
         } catch (Exception ignore) {
@@ -117,6 +128,7 @@ public class UserServiceImpl implements UserService {
             dto.setBlocked(userDto.getBlocked());
         }
         userRepository.save(userMapper.toEntity(dto));
+//        userRepository.save(user1);
     }
 
     @Override
@@ -140,4 +152,33 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    @Override
+    public UserDTO convertUserDTOwithPhoto(UserDTOwithPhoto withPhoto) {
+        UserDTO newDto = new UserDTO();
+        newDto.setUsername(withPhoto.getUsername());
+        newDto.setPassword(withPhoto.getPassword());
+        newDto.setLastName(withPhoto.getLastName());
+        newDto.setFirstName(withPhoto.getFirstName());
+        newDto.setEmail(withPhoto.getEmail());
+        newDto.setId(withPhoto.getId());
+        newDto.setAvatar(withPhoto.getAvatar().getOriginalFilename());
+
+        return newDto;
+    }
+
+    @Override
+    public UserDTOwithPhoto convertUserDTO(UserDTO dto) {
+        UserDTOwithPhoto withPhoto = new UserDTOwithPhoto();
+        File file = new File("C:/Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images"+ dto.getAvatar());
+
+        withPhoto.setId(dto.getId());
+        withPhoto.setUsername(dto.getUsername());
+        withPhoto.setLastName(dto.getLastName());
+        withPhoto.setFirstName(dto.getFirstName());
+        withPhoto.setPassword(dto.getPassword());
+        withPhoto.setEmail(dto.getEmail());
+        withPhoto.setAvatarName(dto.getAvatar());
+
+        return withPhoto;
+    }
 }

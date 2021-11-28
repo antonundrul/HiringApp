@@ -3,6 +3,7 @@ package com.company.hiringapp.controller;
 
 import com.company.hiringapp.dto.RoleDTO;
 import com.company.hiringapp.dto.UserDTO;
+import com.company.hiringapp.dto.UserDTOwithPhoto;
 import com.company.hiringapp.exception.ServiceException;
 import com.company.hiringapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
@@ -37,7 +44,7 @@ public class UserController {
 
         UserDTO userDto = userService.findByUsername(principal.getName());
 
-        model.addAttribute("user", userDto);
+        model.addAttribute("user", userService.convertUserDTO(userDto));
         return "/user/userPersonalCabinet";
     }
 
@@ -45,8 +52,6 @@ public class UserController {
     @GetMapping("/profile/{id}")
     public String getPersonalCabinet(Model model,
                                      @PathVariable (name = "id") Long id) {
-
-
 
         UserDTO userDto = userService.findById(id);
 
@@ -56,7 +61,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/update-user")
-    public String updateUser(@Validated @ModelAttribute("user") UserDTO userDto,
+    public String updateUser(@Validated @ModelAttribute("user") UserDTOwithPhoto userDTOwithPhoto,
                              Principal principal,
                              BindingResult bindingResult,
                              Model model) {
@@ -65,9 +70,18 @@ public class UserController {
             return goBackTo("user/userPersonalCabinet");
         }
         try {
+           UserDTO userDto =userService.convertUserDTOwithPhoto(userDTOwithPhoto);
             userDto.setUsername(principal.getName());
+            String filename = userDTOwithPhoto.getAvatar().getOriginalFilename();
+            File dir = new File("C://Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images");
+            if (filename != null) {
+                File avatar = (File) userDTOwithPhoto.getAvatar();
+                avatar.createNewFile();
+            }
+
+
             userService.update(userDto);
-        } catch (ServiceException ex) {
+        } catch (ServiceException | IOException ex) {
             model.addAttribute("error", ex.getMessage());
             return goBackTo("user/userPersonalCabinet");
         }
