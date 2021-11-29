@@ -14,4 +14,8 @@ public interface VacancyService {
     List<VacancyDTO> findByJobType(JobTypeDTO jobTypeDto);
 
     void update(VacancyDTO vacancyDTO);
+
+    void addResponse(Long id, UserDTO dto);
+
+    void removeResponse(Long id, UserDTO dto);
 }

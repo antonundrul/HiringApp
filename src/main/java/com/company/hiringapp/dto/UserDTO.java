@@ -1,9 +1,11 @@
 package com.company.hiringapp.dto;
 
+import com.company.hiringapp.entity.Vacancy;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Null;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -22,6 +24,7 @@ public class UserDTO extends AbstractDTO {
     //    private List<ParcelDTO> parcels;
     private Integer blocked;
     private String avatar;
+    private List<Vacancy> vacancies;
 
 /*
     private MultipartFile imageUpdate;

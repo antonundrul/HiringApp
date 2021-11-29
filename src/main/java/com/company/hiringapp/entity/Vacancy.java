@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "vacancies")
@@ -36,5 +37,8 @@ public class Vacancy extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "job_type_id")
     private JobType jobType;
+
+    @ManyToMany
+    private List<User> responses;
 
 }

@@ -34,8 +34,8 @@ public class User extends AbstractEntity {
     @Column(name = "avatar")
     private String avatar;
 
-    /*@ManyToMany(mappedBy = "observers")
-    private List<Parcel> parcels;*/
+    @ManyToMany(mappedBy = "responses")
+    private List<Vacancy> vacancies;
 
     /*@Lob
     @Column(name = "image")

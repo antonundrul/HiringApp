@@ -9,6 +9,7 @@ import com.company.hiringapp.dto.mapper.JobTypeMapper;
 import com.company.hiringapp.dto.mapper.UserMapper;
 import com.company.hiringapp.dto.mapper.VacancyMapper;
 import com.company.hiringapp.entity.Resume;
+import com.company.hiringapp.entity.User;
 import com.company.hiringapp.entity.Vacancy;
 import com.company.hiringapp.exception.ResourceNotFoundException;
 import com.company.hiringapp.repository.VacancyRepository;
@@ -16,6 +17,7 @@ import com.company.hiringapp.service.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,5 +61,27 @@ public class VacancyServiceImpl implements VacancyService {
 
         vacancyRepository.save(vacancyMapper.toEntity(vacancyDTO));
 
+    }
+
+    @Override
+    public void addResponse(Long id, UserDTO dto) {
+        Vacancy vacancy = vacancyRepository.getOne(id);
+        List<User> list = vacancy.getResponses();
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(userMapper.toEntity(dto));
+        vacancy.setResponses(list);
+        vacancyRepository.save(vacancy);
+    }
+
+    @Override
+    public void removeResponse(Long id, UserDTO dto) {
+        Vacancy vacancy = vacancyRepository.getOne(id);
+        List<User> list = vacancy.getResponses();
+        if (list != null) {
+            list.remove(userMapper.toEntity(dto));
+        }
+        vacancyRepository.save(vacancy);
     }
 }
