@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -22,5 +23,6 @@ public class VacancyDTO extends AbstractDTO{
     private CityDTO city;
     private UserDTO recruiter;
     private JobTypeDTO jobType;
+    private LocalDate createDate;
     private List<User> responses;
 }

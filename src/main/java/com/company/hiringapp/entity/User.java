@@ -6,10 +6,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -35,7 +32,7 @@ public class User extends AbstractEntity {
     private String avatar;
 
     @ManyToMany(mappedBy = "responses")
-    private List<Vacancy> vacancies;
+    private List<Vacancy> vacancies = new ArrayList<>();
 
     /*@Lob
     @Column(name = "image")

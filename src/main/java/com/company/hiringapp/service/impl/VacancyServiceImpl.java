@@ -40,6 +40,19 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public VacancyDTO findById(Long id) {
+        Vacancy vacancy = vacancyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+
+        return vacancyMapper.toDto(vacancy);
+    }
+
+    @Override
+    public List<VacancyDTO> findAll() {
+        return vacancyMapper.toDtoList(vacancyRepository.findAll());
+    }
+
+    @Override
     public List<VacancyDTO> findByRecruiter(UserDTO recruiterDto) {
         return vacancyMapper.toDtoList(vacancyRepository.findByRecruiter(userMapper.toEntity(recruiterDto)));
     }
@@ -65,23 +78,23 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public void addResponse(Long id, UserDTO dto) {
-        Vacancy vacancy = vacancyRepository.getOne(id);
+        VacancyDTO vacancy = this.findById(id);
         List<User> list = vacancy.getResponses();
         if (list == null) {
             list = new ArrayList<>();
         }
         list.add(userMapper.toEntity(dto));
         vacancy.setResponses(list);
-        vacancyRepository.save(vacancy);
+        vacancyRepository.save(vacancyMapper.toEntity(vacancy));
     }
 
     @Override
     public void removeResponse(Long id, UserDTO dto) {
-        Vacancy vacancy = vacancyRepository.getOne(id);
+        VacancyDTO vacancy=  this.findById(id);
         List<User> list = vacancy.getResponses();
         if (list != null) {
             list.remove(userMapper.toEntity(dto));
         }
-        vacancyRepository.save(vacancy);
+        vacancyRepository.save(vacancyMapper.toEntity(vacancy));
     }
 }

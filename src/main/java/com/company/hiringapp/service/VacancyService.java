@@ -7,6 +7,9 @@ import java.util.List;
 public interface VacancyService {
     VacancyDTO save(VacancyDTO dto);
 
+    VacancyDTO findById(Long id);
+
+    List<VacancyDTO> findAll();
     List<VacancyDTO> findByRecruiter(UserDTO recruiterDto);
 
     List<VacancyDTO> findByCity(CityDTO cityDto);

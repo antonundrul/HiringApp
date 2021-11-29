@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "vacancies")
@@ -37,8 +40,13 @@ public class Vacancy extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "job_type_id")
     private JobType jobType;
+    @Column(name = "create_date")
+    private LocalDate createDate;
 
-    @ManyToMany
-    private List<User> responses;
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = "responses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "vacancy_id"))
+    private List<User> responses = new ArrayList<>();
 
 }
