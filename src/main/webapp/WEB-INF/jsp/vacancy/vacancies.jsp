@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/jsp/util/header.jsp" %>
 
 
-<main role="main" class="flex-shrink-0">
+<main role="main" class="flex-shrink-0 container">
     <%--<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -256,16 +256,20 @@
     </div>--%>
 
 
-        <div class="container">
+<%--        <div class="container">--%>
 
             <h2 class="display-4">
                 Вакансии
             </h2>
 
-            <sec:authorize access="isAuthenticated()">
-                   <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/myResponses">Мои отклики</a>
-            </sec:authorize>
-
+            <div class="d-block gap-2 mt-2 ">
+                <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies">Все вакансии</a>
+                <sec:authorize access="isAuthenticated()">
+                <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/myResponses">Мои отклики</a>
+                </sec:authorize>
+            </div>
+            <br>
+            <br>
             <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                 <tr>
@@ -312,7 +316,12 @@
                         </td>
                         <sec:authorize access="isAuthenticated()" >
                             <td>
-                                Откликнуться
+                                <c:if test="${!vacancy.responses.contains(user)}">
+                                    <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/subscribe">Откликнуться</a>
+                                </c:if>
+                                <c:if test="${vacancy.responses.contains(user)}">
+                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/unsubscribe">Отменить отклик</a>
+                                </c:if>
                             </td>
                         </sec:authorize>
                        <%-- <td>
@@ -332,7 +341,7 @@
                 </c:forEach>
                 </tbody>
             </table>
-        </div>
+<%--        </div>--%>
 
 
 </main>

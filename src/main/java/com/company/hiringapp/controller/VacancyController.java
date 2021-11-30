@@ -33,9 +33,14 @@ public class VacancyController {
     private UserService userService;
 
     @GetMapping("/vacancies")
-    public ModelAndView getAll() {
+    public ModelAndView getAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
+
+        if(principal!=null) {
+            UserDTO userDTO = userService.findByUsername(principal.getName());
+            modelAndView.addObject("user", userDTO);
+        }
         modelAndView.setViewName("vacancy/vacancies");
 //        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
         modelAndView.addObject("vacancies", vacancyService.findAll());
@@ -86,7 +91,7 @@ public class VacancyController {
         UserDTO userDTO = userService.findByUsername(principal.getName());
         vacancyService.removeResponse(id, userDTO);
 
-        return redirectTo("vacancies/vacancyDetail/"+id);
+        return redirectTo("vacancies");
     }
 
     @GetMapping("/vacancies/myResponses")
@@ -98,6 +103,7 @@ public class VacancyController {
 
 //        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
         modelAndView.addObject("vacancies", vacancyService.myResponses(user));
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }
