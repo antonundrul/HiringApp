@@ -63,6 +63,18 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public List<VacancyDTO> myResponses(UserDTO userDTO) {
+        List<VacancyDTO> vacancies = this.findAll();
+        List<VacancyDTO> responses = new ArrayList<>();
+        for(VacancyDTO vacancy:vacancies){
+            if(vacancy.getResponses().contains(userDTO)){
+                responses.add(vacancy);
+            }
+        }
+        return responses;
+    }
+
+    @Override
     public void update(VacancyDTO vacancyDTO) {
         Vacancy vacancy = vacancyRepository.findById(vacancyDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(vacancyDTO.getId()));

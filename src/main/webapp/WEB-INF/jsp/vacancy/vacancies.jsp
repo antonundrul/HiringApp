@@ -262,6 +262,10 @@
                 Вакансии
             </h2>
 
+            <sec:authorize access="isAuthenticated()">
+                   <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/myResponses">Мои отклики</a>
+            </sec:authorize>
+
             <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                 <tr>

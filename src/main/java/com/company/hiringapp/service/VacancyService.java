@@ -15,6 +15,7 @@ public interface VacancyService {
     List<VacancyDTO> findByCity(CityDTO cityDto);
 
     List<VacancyDTO> findByJobType(JobTypeDTO jobTypeDto);
+    List<VacancyDTO> myResponses(UserDTO userDTO);
 
     void update(VacancyDTO vacancyDTO);
 

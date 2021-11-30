@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.company.hiringapp.controller.ControllerHelper.redirectTo;
@@ -87,4 +88,18 @@ public class VacancyController {
 
         return redirectTo("vacancies/vacancyDetail/"+id);
     }
+
+    @GetMapping("/vacancies/myResponses")
+    public ModelAndView myResponses(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("vacancy/vacancies");
+        UserDTO user = userService.findByUsername(principal.getName());
+
+//        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
+        modelAndView.addObject("vacancies", vacancyService.myResponses(user));
+
+        return modelAndView;
+    }
+
 }
