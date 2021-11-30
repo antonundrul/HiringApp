@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,9 +45,15 @@ public class Vacancy extends AbstractEntity{
     private LocalDate createDate;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(name = "responses",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "vacancy_id"))
+    @JoinTable(name = "vacancies_users",
+            joinColumns = @JoinColumn(name = "vacancy_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> responses = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = "vacancies_skills",
+            joinColumns = @JoinColumn(name = "vacancy_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills = new ArrayList<>();
 
 }

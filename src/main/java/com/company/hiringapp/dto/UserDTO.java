@@ -24,7 +24,7 @@ public class UserDTO extends AbstractDTO {
     //    private List<ParcelDTO> parcels;
     private Integer blocked;
     private String avatar;
-    private List<Vacancy> vacancies;
+//    private List<VacancyDTO> vacancies;
 
 /*
     private MultipartFile imageUpdate;

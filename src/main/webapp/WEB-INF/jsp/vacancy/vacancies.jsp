@@ -255,8 +255,6 @@
         </div>
     </div>--%>
 
-        <javatime:format value="${parcel.dateCreated}" style="SS" var="dateCreated"/>
-        <javatime:format value="${parcel.lastUpdated}" style="SS" var="lastUpdated"/>
 
         <div class="container">
 
@@ -281,32 +279,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="map" items="${vacancyMap}">
+                <c:forEach var="vacancy" items="${vacancies}">
 <%--                    <javatime:format value="${vacancy.vacancy.createDate}" style="SS" var="dateCreated"/>--%>
 
                     <tr>
                         <th>
-                               <a href="${contextPath}/vacancies/vacancyDetail/${map.key.id}" style="color: black"> ${map.key.position}
+                               <a href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}" style="color: black"> ${vacancy.position}
                         </th>
                         <td>
-                                ${map.key.companyName}
+                                ${vacancy.companyName}
                         </td>
                         <td>
-                                ${map.key.salary} ${map.key.currency.code}
+                                ${vacancy.salary} ${vacancy.currency.code}
                         </td>
                         <td>
-                                ${map.key.jobType.name}
+                                ${vacancy.jobType.name}
                         </td>
                         <td>
-                             <c:forEach var="a" items="${map.value}">
-                                 ${a.skill.name}<br>
+                             <c:forEach var="a" items="${vacancy.skills}">
+                                 ${a.name}<br>
                              </c:forEach>
                         </td>
                         <td>
-                                ${map.key.city.name}
+                                ${vacancy.city.name}
                         </td>
                         <td>
-                                ${map.key.createDate}
+                                ${vacancy.createDate}
                         </td>
                         <sec:authorize access="isAuthenticated()" >
                             <td>

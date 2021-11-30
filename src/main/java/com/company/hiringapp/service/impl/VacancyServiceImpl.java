@@ -1,15 +1,10 @@
 package com.company.hiringapp.service.impl;
 
-import com.company.hiringapp.dto.CityDTO;
-import com.company.hiringapp.dto.JobTypeDTO;
-import com.company.hiringapp.dto.UserDTO;
-import com.company.hiringapp.dto.VacancyDTO;
+import com.company.hiringapp.dto.*;
 import com.company.hiringapp.dto.mapper.CityMapper;
 import com.company.hiringapp.dto.mapper.JobTypeMapper;
 import com.company.hiringapp.dto.mapper.UserMapper;
 import com.company.hiringapp.dto.mapper.VacancyMapper;
-import com.company.hiringapp.entity.Resume;
-import com.company.hiringapp.entity.User;
 import com.company.hiringapp.entity.Vacancy;
 import com.company.hiringapp.exception.ResourceNotFoundException;
 import com.company.hiringapp.repository.VacancyRepository;
@@ -77,23 +72,45 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public void addSkill(Long id, SkillDTO skill) {
+        VacancyDTO vacancy = this.findById(id);
+        List<SkillDTO> skills = vacancy.getSkills();
+        if (skills == null) {
+            skills = new ArrayList<>();
+        }
+        skills.add(skill);
+        vacancy.setSkills(skills);
+        vacancyRepository.save(vacancyMapper.toEntity(vacancy));
+    }
+
+    @Override
+    public void removeSkill(Long id, SkillDTO skill) {
+        VacancyDTO vacancy = this.findById(id);
+        List<SkillDTO> skills = vacancy.getSkills();
+        if (skills != null) {
+            skills.remove(skill);
+        }
+        vacancyRepository.save(vacancyMapper.toEntity(vacancy));
+    }
+
+    @Override
     public void addResponse(Long id, UserDTO dto) {
         VacancyDTO vacancy = this.findById(id);
-        List<User> list = vacancy.getResponses();
+        List<UserDTO> list = vacancy.getResponses();
         if (list == null) {
             list = new ArrayList<>();
         }
-        list.add(userMapper.toEntity(dto));
+        list.add(dto);
         vacancy.setResponses(list);
         vacancyRepository.save(vacancyMapper.toEntity(vacancy));
     }
 
     @Override
     public void removeResponse(Long id, UserDTO dto) {
-        VacancyDTO vacancy=  this.findById(id);
-        List<User> list = vacancy.getResponses();
+        VacancyDTO vacancy = this.findById(id);
+        List<UserDTO> list = vacancy.getResponses();
         if (list != null) {
-            list.remove(userMapper.toEntity(dto));
+            vacancy.getResponses().remove(dto);
         }
         vacancyRepository.save(vacancyMapper.toEntity(vacancy));
     }

@@ -50,11 +50,11 @@ public class VacancySkillSetServiceImpl implements VacancySkillSetService {
     }
 
     @Override
-    public Map<VacancyDTO, List<VacancySkillSetDTO>> groupByVacancies(List<VacancyDTO> vacancies) {
+    public List<List<VacancySkillSetDTO>> groupByVacancies(List<VacancyDTO> vacancies) {
 
         List<VacancySkillSetDTO> vacancySkillSetDTOList = vacancySkillSetMapper.toDtoList(vacancySkillSetRepository.findAll());
 
-        Map<VacancyDTO,List<VacancySkillSetDTO>> result = new HashMap<>();
+        List<List<VacancySkillSetDTO>> result = new ArrayList<>();
 
         List<VacancySkillSetDTO> skillList = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class VacancySkillSetServiceImpl implements VacancySkillSetService {
                     skillList.add(vakancySkillSet);
                 }
             }
-            result.put(vacancy,skillList);
+            result.add(skillList);
             skillList.remove(skillList.subList(0,skillList.size()-1));
         }
 

@@ -13,6 +13,6 @@ public interface VacancySkillSetService {
 //    Map<VacancyDTO,List<SkillDTO>>
     void delete(Long id);
 
-    Map<VacancyDTO,List<VacancySkillSetDTO>> groupByVacancies(List<VacancyDTO> vacancies);
+    List<List<VacancySkillSetDTO>> groupByVacancies(List<VacancyDTO> vacancies);
 
 }
