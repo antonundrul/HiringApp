@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.company.hiringapp.controller.ControllerHelper.redirectTo;
@@ -170,6 +169,19 @@ public class VacancyController {
 
         vacancyService.delete(vacancyDTO);
         return redirectTo("vacancies");
+    }
+
+    @GetMapping("/vacancies/responses/{id}")
+    public ModelAndView responses(@PathVariable Long id, Principal principal) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        VacancyDTO vacancyDTO = vacancyService.findById(id);
+
+        modelAndView.setViewName("vacancy/responses");
+        modelAndView.addObject("users", vacancyDTO.getResponses());
+
+        return modelAndView;
     }
 
 
