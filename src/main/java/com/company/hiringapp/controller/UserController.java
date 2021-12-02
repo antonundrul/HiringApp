@@ -13,15 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Objects;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
@@ -46,17 +42,19 @@ public class UserController {
 
         model.addAttribute("user", userService.convertUserDTO(userDto));
         return "/user/userPersonalCabinet";
+//        return "/user/profile";
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping("/profile/{id}")
     public String getPersonalCabinet(Model model,
-                                     @PathVariable (name = "id") Long id) {
+                                     @PathVariable(name = "id") Long id) {
 
         UserDTO userDto = userService.findById(id);
 
         model.addAttribute("user", userDto);
         return "/user/userPersonalCabinet";
+//        return "/user/profile";
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -70,7 +68,7 @@ public class UserController {
             return goBackTo("user/userPersonalCabinet");
         }
         try {
-           UserDTO userDto =userService.convertUserDTOwithPhoto(userDTOwithPhoto);
+            UserDTO userDto = userService.convertUserDTOwithPhoto(userDTOwithPhoto);
             userDto.setUsername(principal.getName());
             String filename = userDTOwithPhoto.getAvatar().getOriginalFilename();
             File dir = new File("C://Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images");
@@ -89,7 +87,7 @@ public class UserController {
     }
 
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public ModelAndView findAllUsers() {
         ModelAndView modelAndView = new ModelAndView();

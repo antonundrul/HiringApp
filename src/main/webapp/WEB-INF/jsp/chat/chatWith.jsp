@@ -66,7 +66,7 @@
 
                                         <a href="${contextPath}/chats/chatWith/${chat.key.id}" style="color: black">
                      <span class="chat-img pull-left">
-                     <img src="${contextPath}/resources/images/${chat.key.avatar}" alt="User Avatar" class="img-circle">
+<%--                     <img src="${contextPath}/resources/images/${chat.key.avatar}" alt="User Avatar" class="img-circle">--%>
                      </span>
                                         <div class="chat-body clearfix">
                                             <div class="header_sec">
@@ -92,7 +92,7 @@
                         <div class="new_message_head">
                             <div class="pull-left">
                                  <span class="chat-img pull-left">
-                                <img src="${contextPath}/resources/images/${toUser.avatar}" alt="User Avatar" class="img-circle">
+<%--                                <img src="${contextPath}/resources/images/${toUser.avatar}" alt="User Avatar" class="img-circle">--%>
                                  </span>
                                      <h3> ${toUser.firstName} ${toUser.lastName}</h3>
                             </div>
@@ -116,7 +116,7 @@
                     <c:when test="${message.sender.id}==${toUser.id}">
                                 <li class="left clearfix">
                      <span class="chat-img1 pull-left">
-                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">
+<%--                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">--%>
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>
@@ -127,7 +127,7 @@
                     <c:otherwise>
                                 <li class="left clearfix admin_chat">
                      <span class="chat-img1 pull-right">
-                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">
+<%--                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">--%>
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>

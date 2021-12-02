@@ -67,7 +67,7 @@
                 <a href="${contextPath}/chats/chatWith/${chat.key.id}" style="color: black">
 
                      <span class="chat-img pull-left">
-                     <img src="${contextPath}/resources/images/${chat.key.avatar}" alt="User Avatar" class="img-circle">
+<%--                     <img src="${contextPath}/resources/images/${chat.key.avatar}" alt="User Avatar" class="img-circle">--%>
                      </span>
                   <div class="chat-body clearfix">
                     <div class="header_sec">

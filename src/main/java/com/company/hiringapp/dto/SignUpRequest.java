@@ -27,7 +27,7 @@ public class SignUpRequest {
     @Pattern(regexp = ".{4,48}", message = "Email должно быть больше 4 но меньше 48 символов ")
     private String email;
 
-    private String avatar;
+//    private String avatar;
 
     public SignUpRequest() {
     }
@@ -80,11 +80,11 @@ public class SignUpRequest {
         this.email = email;
     }
 
-    public String getAvatar() {
+    /*public String getAvatar() {
         return avatar;
     }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
+    }*/
 }

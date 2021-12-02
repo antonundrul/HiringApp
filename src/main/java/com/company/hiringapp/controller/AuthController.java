@@ -57,7 +57,7 @@ public class AuthController {
         return modelAndView;
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/login")
     public String registration(Model model,
                                @Validated @ModelAttribute("userForm") SignUpRequest userForm,
                                BindingResult bindingResult) {
@@ -93,6 +93,8 @@ public class AuthController {
             modelAndView.addObject("message", "У вас нет прав.");
         }
         modelAndView.setViewName("common/login");
+
+        modelAndView.addObject("userForm", new SignUpRequest());
 
         return modelAndView;
     }

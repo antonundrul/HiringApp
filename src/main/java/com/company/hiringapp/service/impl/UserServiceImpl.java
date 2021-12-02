@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
         dto.setEmail(userDto.getEmail());
         dto.setFirstName(userDto.getFirstName());
         dto.setLastName(userDto.getLastName());
-        dto.setAvatar(userDto.getAvatar());
+//        dto.setAvatar(userDto.getAvatar());
 
 
 
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
         newDto.setFirstName(withPhoto.getFirstName());
         newDto.setEmail(withPhoto.getEmail());
         newDto.setId(withPhoto.getId());
-        newDto.setAvatar(withPhoto.getAvatar().getOriginalFilename());
+//        newDto.setAvatar(withPhoto.getAvatar().getOriginalFilename());
 
         return newDto;
     }
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTOwithPhoto convertUserDTO(UserDTO dto) {
         UserDTOwithPhoto withPhoto = new UserDTOwithPhoto();
-        File file = new File("C:/Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images"+ dto.getAvatar());
+//        File file = new File("C:/Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images"+ dto.getAvatar());
 
         withPhoto.setId(dto.getId());
         withPhoto.setUsername(dto.getUsername());
@@ -177,7 +177,7 @@ public class UserServiceImpl implements UserService {
         withPhoto.setFirstName(dto.getFirstName());
         withPhoto.setPassword(dto.getPassword());
         withPhoto.setEmail(dto.getEmail());
-        withPhoto.setAvatarName(dto.getAvatar());
+//        withPhoto.setAvatarName(dto.getAvatar());
 
         return withPhoto;
     }

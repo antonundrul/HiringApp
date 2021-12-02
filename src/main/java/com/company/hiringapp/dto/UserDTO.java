@@ -23,7 +23,7 @@ public class UserDTO extends AbstractDTO {
     private String email;
     //    private List<ParcelDTO> parcels;
     private Integer blocked;
-    private String avatar;
+//    private String avatar;
 //    private List<VacancyDTO> vacancies;
 
 /*

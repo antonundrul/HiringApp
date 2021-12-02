@@ -1,5 +1,6 @@
 package com.company.hiringapp.controller;
 
+import com.company.hiringapp.dto.MessageDTO;
 import com.company.hiringapp.dto.UserDTO;
 import com.company.hiringapp.dto.VacancyDTO;
 import com.company.hiringapp.dto.VacancySkillSetDTO;
@@ -7,14 +8,16 @@ import com.company.hiringapp.service.UserService;
 import com.company.hiringapp.service.VacancyService;
 import com.company.hiringapp.service.VacancySkillSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,5 +110,52 @@ public class VacancyController {
 
         return modelAndView;
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @GetMapping("/vacancies/myVacancies")
+    public ModelAndView myVacancies(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("vacancy/vacancies");
+        UserDTO user = userService.findByUsername(principal.getName());
+
+//        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
+        modelAndView.addObject("vacancies", vacancyService.findByRecruiter(user));
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @GetMapping("/vacancies/addVacancy")
+    public ModelAndView addVacancy(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("vacancy/addVacancyForm");
+        UserDTO user = userService.findByUsername(principal.getName());
+
+        modelAndView.addObject("vacancyForm", new VacancyDTO());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @PostMapping("/vacancies/addVacancy")
+    public String addVacancy(Model model,
+                                   @Validated @ModelAttribute("vacancyForm") VacancyDTO vacancyDTO,
+                                   BindingResult bindingResult,
+                                   Principal principal) {
+         UserDTO userDTO = userService.findByUsername(principal.getName());
+
+        vacancyDTO.setRecruiter(userDTO);
+        vacancyDTO.setCreateDate(LocalDate.now());
+
+        vacancyService.save(vacancyDTO);
+
+        return redirectTo("vacancies/myVacancies");
+    }
+
+
 
 }
