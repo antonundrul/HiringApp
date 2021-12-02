@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface VacancyService {
     VacancyDTO save(VacancyDTO dto);
+    void delete(VacancyDTO dto);
 
     VacancyDTO findById(Long id);
 

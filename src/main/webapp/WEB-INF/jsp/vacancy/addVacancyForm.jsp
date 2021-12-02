@@ -20,29 +20,96 @@
         Разместить вакансию
     </h2>
 
-    <form id="form" method="POST" action="save_data.php">
-        <input type="text" name="text_field[]">
-        <button type="submit">SUBMIT</button>
-    </form>
-    <button onclick="add_field()">ADD FIELD</button>
-    <script>
-        function add_field(){
+    <form:form method="POST" modelAttribute="vacancyForm" enctype="multipart/form-data">
 
-            var x = document.getElementById("form");
-            // создаем новое поле ввода
-            var new_field = document.createElement("input");
-            // установим для поля ввода тип данных 'text'
-            new_field.setAttribute("type", "text");
-            // установим имя для поля ввода
-            new_field.setAttribute("name", "text_field[]");
-            // определим место вствки нового поля ввода (перед каким элементом его вставить)
-            var pos = x.childElementCount;
+    <spring:bind path="position">
+        <div class="form-group  ${status.error ? 'has-error' : ''}">
+           < <form:input  type="text" path="position" class="form-control" placeholder="Должность"
+                         autofocus="true"/>
+            <form:errors path="position"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="description">
+        <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <form:input  type="textarea" path="description" class="form-control" placeholder="Описание"
+                         autofocus="true"/>
+            <form:errors path="description"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="salary">
+        <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <form:input  type="number" path="salary" class="form-control" placeholder="Заработная плата"
+                         autofocus="true"/>
+            <form:errors path="salary"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="currency">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:select id="currency" path="currency" class="form-control">
+                <form:option value="0" label="Валюта"/>
+                <form:options items="${currencies}"
+                              itemLabel="name"
+                              itemValue="id"/>
+            </form:select>
+            <form:errors path="currency"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="companyName">
+        <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <form:input  type="text" path="companyName" class="form-control" placeholder="Название компании"
+                         autofocus="true"/>
+            <form:errors path="companyName"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="reqExperience">
+        <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <form:input  type="text" path="reqExperience" class="form-control" placeholder="Необходимый опыт"
+                         autofocus="true"/>
+            <form:errors path="reqExperience"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="city">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:select id="city" path="city" class="form-control">
+                <form:option value="0" label="Город"/>
+                <form:options items="${cities}"
+                              itemLabel="name"
+                              itemValue="id"/>
+            </form:select>
+            <form:errors path="city"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="jobType">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:select id="jobType" path="jobType" class="form-control">
+                <form:option value="0" label="Тип"/>
+                <form:options items="${jobTypes}"
+                              itemLabel="name"
+                              itemValue="id"/>
+            </form:select>
+            <form:errors path="jobType"/>
+        </div>
+    </spring:bind>
+    <spring:bind path="skills">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:select id="skills" path="skills" class="form-control" multiple="true">
+<%--                <form:option value="0" label="Навыки"/>--%>
+                <form:options items="${skills}"
+                              itemLabel="name"
+                              itemValue="id"/>
+            </form:select>
+            <form:errors path="skills"/>
+        </div>
+    </spring:bind>
 
-            // добавим поле ввода в форму
-            x.insertBefore(new_field, x.childNodes[pos]);
-        }
-    </script>
+        <h3>
+                ${error}
+        </h3>
 
+        <button class="btnContactSubmit" type="submit">Сохранить</button>
+
+
+    </form:form>
 
 
 

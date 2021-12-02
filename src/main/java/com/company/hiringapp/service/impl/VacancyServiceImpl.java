@@ -35,6 +35,11 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
+    public void delete(VacancyDTO dto) {
+        vacancyRepository.delete(vacancyMapper.toEntity(dto));
+    }
+
+    @Override
     public VacancyDTO findById(Long id) {
         Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));

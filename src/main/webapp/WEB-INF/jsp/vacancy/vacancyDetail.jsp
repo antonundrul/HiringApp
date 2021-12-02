@@ -33,6 +33,9 @@
             <div class="d-block gap-2 mt-2 ">
                 <a type="button" class="btn btn-warning <c:if test="${vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/subscribe">Откликнуться</a>
                 <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/unsubscribe">Отменить отклик</a>
+                <c:if test="${vacancy.recruiter.id.equals(user.id)}">
+                <a type="button" class="btn btn-danger" href="${contextPath}/vacancies/delete/${vacancy.id}">Удалить</a>
+                </c:if>
             </div>
         </sec:authorize>
 </main>

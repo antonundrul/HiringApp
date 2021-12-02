@@ -1,12 +1,7 @@
 package com.company.hiringapp.controller;
 
-import com.company.hiringapp.dto.MessageDTO;
-import com.company.hiringapp.dto.UserDTO;
-import com.company.hiringapp.dto.VacancyDTO;
-import com.company.hiringapp.dto.VacancySkillSetDTO;
-import com.company.hiringapp.service.UserService;
-import com.company.hiringapp.service.VacancyService;
-import com.company.hiringapp.service.VacancySkillSetService;
+import com.company.hiringapp.dto.*;
+import com.company.hiringapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -34,6 +29,14 @@ public class VacancyController {
     private VacancySkillSetService vacancySkillSetService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JobTypeService jobTypeService;
+    @Autowired
+    private CityService cityService;
+    @Autowired
+    private SkillService skillService;
+    @Autowired
+    private CurrencyService currencyService;
 
     @GetMapping("/vacancies")
     public ModelAndView getAll(Principal principal) {
@@ -136,6 +139,10 @@ public class VacancyController {
         UserDTO user = userService.findByUsername(principal.getName());
 
         modelAndView.addObject("vacancyForm", new VacancyDTO());
+        modelAndView.addObject("jobTypes", jobTypeService.findAll());
+        modelAndView.addObject("cities", cityService.findAll());
+        modelAndView.addObject("currencies", currencyService.findAll());
+        modelAndView.addObject("skills", skillService.findAll());
 
         return modelAndView;
     }
@@ -156,6 +163,14 @@ public class VacancyController {
         return redirectTo("vacancies/myVacancies");
     }
 
+    @GetMapping("/vacancies/delete/{id}")
+    public String delete(@PathVariable Long id, Principal principal) {
+        UserDTO userDTO = userService.findByUsername(principal.getName());
+        VacancyDTO vacancyDTO = vacancyService.findById(id);
+
+        vacancyService.delete(vacancyDTO);
+        return redirectTo("vacancies");
+    }
 
 
 }
