@@ -59,7 +59,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/update-user")
-    public String updateUser(@Validated @ModelAttribute("user") UserDTOwithPhoto userDTOwithPhoto,
+    public String updateUser(@Validated @ModelAttribute("user") UserDTO userDTO,
                              Principal principal,
                              BindingResult bindingResult,
                              Model model) {
@@ -68,18 +68,18 @@ public class UserController {
             return goBackTo("user/userPersonalCabinet");
         }
         try {
-            UserDTO userDto = userService.convertUserDTOwithPhoto(userDTOwithPhoto);
-            userDto.setUsername(principal.getName());
-            String filename = userDTOwithPhoto.getAvatar().getOriginalFilename();
+//            UserDTO userDto = userService.convertUserDTOwithPhoto(userDTOwithPhoto);
+            userDTO.setUsername(principal.getName());
+            /*String filename = userDTOwithPhoto.getAvatar().getOriginalFilename();
             File dir = new File("C://Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images");
             if (filename != null) {
                 File avatar = (File) userDTOwithPhoto.getAvatar();
                 avatar.createNewFile();
             }
+*/
 
-
-            userService.update(userDto);
-        } catch (ServiceException | IOException ex) {
+            userService.update(userDTO);
+        } catch (ServiceException ex) {
             model.addAttribute("error", ex.getMessage());
             return goBackTo("user/userPersonalCabinet");
         }

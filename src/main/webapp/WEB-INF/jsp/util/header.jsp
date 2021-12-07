@@ -8,7 +8,7 @@
            <a href="${contextPath}/">
                <img src="${contextPath}/resources/images/logo.png" width="50" height="50">
            </a>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <ul class="nav col-6 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="${contextPath}/" class="nav-link px-2 text-white">Главная</a></li>
                 <li><a href="${contextPath}/vacancies" class="nav-link px-2 text-white">Вакансии</a></li>
                 <sec:authorize access="isAuthenticated()">
@@ -17,11 +17,6 @@
                 <li><a href="${contextPath}/about" class="nav-link px-2 text-white">О нас</a></li>
 
             </ul>
-
-            <form:form action="/" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input type="search" id="track" name="track" class="form-control form-control-dark" placeholder="Найти..." />
-                <input type="submit" hidden />
-            </form:form>
 
             <sec:authentication var="userLogin" property="principal" />
 

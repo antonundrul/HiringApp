@@ -1,6 +1,7 @@
 package com.company.hiringapp.controller;
 
 import com.company.hiringapp.dto.*;
+import com.company.hiringapp.exception.ServiceException;
 import com.company.hiringapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.company.hiringapp.controller.ControllerHelper.redirectTo;
+import static com.company.hiringapp.controller.ControllerHelper.*;
 
 
 @Controller
@@ -182,6 +183,39 @@ public class VacancyController {
         modelAndView.addObject("users", vacancyDTO.getResponses());
 
         return modelAndView;
+    }
+
+
+
+    @GetMapping("/skills/add")
+    public ModelAndView addSkill() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("skillForm", new SkillDTO());
+        modelAndView.setViewName("vacancy/addSkill");
+
+        return modelAndView;
+    }
+
+
+    @PostMapping("/skills/add")
+    public String addCity(Model model,
+                          @Validated @ModelAttribute("skillForm") SkillDTO dto,
+                          BindingResult result,
+                          Principal principal) {
+        if (checkBindingResult(result)) {
+            model.addAttribute("skillForm", dto);
+            return "vacancy/addSkill";
+        }
+
+        try {
+
+            skillService.save(dto);
+        } catch (ServiceException e) {
+            model.addAttribute("message", e.getMessage());
+            return goBackTo("vacancy/addSkill");
+        }
+
+        return redirectTo("vacancies/addVacancy");
     }
 
 

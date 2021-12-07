@@ -24,7 +24,7 @@
 
     <spring:bind path="position">
         <div class="form-group  ${status.error ? 'has-error' : ''}">
-           < <form:input  type="text" path="position" class="form-control" placeholder="Должность"
+            <form:input  type="text" path="position" class="form-control" placeholder="Должность"
                          autofocus="true"/>
             <form:errors path="position"/>
         </div>
@@ -38,6 +38,7 @@
     </spring:bind>
     <spring:bind path="salary">
         <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <p>Заработная плата</p>
             <form:input  type="number" path="salary" class="form-control" placeholder="Заработная плата"
                          autofocus="true"/>
             <form:errors path="salary"/>
@@ -63,6 +64,7 @@
     </spring:bind>
     <spring:bind path="reqExperience">
         <div class="form-group  ${status.error ? 'has-error' : ''}">
+            <p>Требуемый опыт</p>
             <form:input  type="text" path="reqExperience" class="form-control" placeholder="Необходимый опыт"
                          autofocus="true"/>
             <form:errors path="reqExperience"/>
@@ -107,7 +109,7 @@
         </h3>
 
         <button class="btnContactSubmit" type="submit">Сохранить</button>
-
+<a href="${contextPath}/skills/add" class="btnContactSubmit">Добавить навык</a>
 
     </form:form>
 

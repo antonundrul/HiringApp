@@ -7,4 +7,9 @@ import static com.company.hiringapp.controller.ControllerHelper.*;
 @Controller
 public class ResumeController {
 
+
+
+
+
+
 }
