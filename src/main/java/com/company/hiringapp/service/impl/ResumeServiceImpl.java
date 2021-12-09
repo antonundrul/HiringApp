@@ -44,6 +44,11 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    public List<ResumeDTO> findAll() {
+        return resumeMapper.toDtoList(resumeRepository.findAll());
+    }
+
+    @Override
     public void update(ResumeDTO resumeDTO) {
         Resume resume = resumeRepository.findById(resumeDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(resumeDTO.getId()));

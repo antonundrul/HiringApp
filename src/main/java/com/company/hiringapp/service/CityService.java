@@ -11,4 +11,6 @@ public interface CityService {
     CityDTO findById(Long id);
 
     CityDTO findByName(String name);
+
+    CityDTO save(CityDTO dto);
 }

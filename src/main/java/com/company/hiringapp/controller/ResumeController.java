@@ -36,6 +36,17 @@ public class ResumeController {
     private SkillService skillService;
 
 
+    @GetMapping("/resumes")
+    public ModelAndView findAllResumes(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.setViewName("resume/resumes");
+        modelAndView.addObject("resumes", resumeService.findAll());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/resume/add")
     public ModelAndView addResume(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
@@ -50,7 +61,7 @@ public class ResumeController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/resume/add")
     public String addResume(Model model,
                              @Validated @ModelAttribute("resumeForm") ResumeDTO resumeDTO,
@@ -67,6 +78,7 @@ public class ResumeController {
     }
 
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/resume/{id}")
     public ModelAndView resume(Principal principal,
                                @PathVariable(name = "id") Long id) {
@@ -77,7 +89,13 @@ public class ResumeController {
         UserDTO currentUser = userService.findByUsername(principal.getName());
         ResumeDTO resume = resumeService.findByUser(user);
 
-        modelAndView.addObject("currentUser", currentUser);
+        boolean isCurrentUser = false;
+        if(user.getId()==currentUser.getId()){
+            isCurrentUser=true;
+        }
+
+
+        modelAndView.addObject("isCurrentUser", isCurrentUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("resume", resume);
 
@@ -94,7 +112,7 @@ public class ResumeController {
         return redirectTo("vacancies");
     }*/
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/experiences/add/{id}")
     public ModelAndView addExperience(Principal principal,
                                       @PathVariable(name = "id") Long id) {
@@ -110,7 +128,7 @@ public class ResumeController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/experiences/add/{id}")
     public String addExperience(Model model,
                             @Validated @ModelAttribute("experienceForm") ExperienceDTO2 experienceDTO2,

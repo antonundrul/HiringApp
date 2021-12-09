@@ -83,6 +83,7 @@ public class VacancyController {
         return "/vacancy/vacancyDetail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/vacancies/vacancyDetail/{id}/subscribe")
     public String subscribe(@PathVariable(name = "id") Long id,
                             Principal principal) {
@@ -92,7 +93,7 @@ public class VacancyController {
 
         return redirectTo("vacancies/vacancyDetail/"+id);
     }
-
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/vacancies/vacancyDetail/{id}/unsubscribe")
     public String unsubscribe(@PathVariable(name = "id") Long id,
                               Principal principal) {
@@ -103,6 +104,7 @@ public class VacancyController {
         return redirectTo("vacancies");
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HR')")
     @GetMapping("/vacancies/myResponses")
     public ModelAndView myResponses(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
@@ -166,6 +168,7 @@ public class VacancyController {
         return redirectTo("vacancies/myVacancies");
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
     @GetMapping("/vacancies/delete/{id}")
     public String delete(@PathVariable Long id, Principal principal) {
         UserDTO userDTO = userService.findByUsername(principal.getName());
@@ -175,6 +178,7 @@ public class VacancyController {
         return redirectTo("vacancies");
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
     @GetMapping("/vacancies/responses/{id}")
     public ModelAndView responses(@PathVariable Long id, Principal principal) {
 
@@ -198,7 +202,7 @@ public class VacancyController {
     }
 
 
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/skills/add")
     public ModelAndView addSkill() {
         ModelAndView modelAndView = new ModelAndView();
@@ -208,9 +212,9 @@ public class VacancyController {
         return modelAndView;
     }
 
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/skills/add")
-    public String addCity(Model model,
+    public String addSkill(Model model,
                           @Validated @ModelAttribute("skillForm") SkillDTO dto,
                           BindingResult result,
                           Principal principal) {
@@ -225,6 +229,38 @@ public class VacancyController {
         } catch (ServiceException e) {
             model.addAttribute("message", e.getMessage());
             return goBackTo("vacancy/addSkill");
+        }
+
+        return redirectTo("vacancies/addVacancy");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/cities/add")
+    public ModelAndView addCity() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("cityForm", new CityDTO());
+        modelAndView.setViewName("vacancy/addCity");
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/cities/add")
+    public String addCity(Model model,
+                           @Validated @ModelAttribute("cityForm") CityDTO dto,
+                           BindingResult result,
+                           Principal principal) {
+        if (checkBindingResult(result)) {
+            model.addAttribute("cityForm", dto);
+            return "vacancy/addCity";
+        }
+
+        try {
+
+            cityService.save(dto);
+        } catch (ServiceException e) {
+            model.addAttribute("message", e.getMessage());
+            return goBackTo("vacancy/addCity");
         }
 
         return redirectTo("vacancies/addVacancy");

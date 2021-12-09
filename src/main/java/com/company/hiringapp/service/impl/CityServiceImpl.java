@@ -36,4 +36,10 @@ public class CityServiceImpl implements CityService {
     public CityDTO findByName(String name) {
         return mapper.toDto(repository.findByName(name));
     }
+
+    @Override
+    public CityDTO save(CityDTO dto) {
+        repository.save(mapper.toEntity(dto));
+        return dto;
+    }
 }

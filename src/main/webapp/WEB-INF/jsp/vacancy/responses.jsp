@@ -23,43 +23,28 @@
             <div class="col-md-11 ">
                 <div class="row">
 
-                    <c:forEach var="resume" items="${resumes}">
+                    <c:forEach var="user" items="${users}">
 
                     <div class="col-md-6 col-lg-4">
+                        <br>
                         <div class="card hover-shadow">
 
                             <div class="card-body text-center pt-1 pb-20">
                                 <a href="#">
                                     <img class="avatar avatar-xxl" src="https://bootdey.com/img/Content/avatar/avatar2.png">
                                 </a>
-                                <h5 class="mt-2 mb-0"><a class="hover-primary" href="${contextPath}/profile/${resume.user.id}">${resume.user.firstName} ${resume.user.lastName}</a></h5>
-                                <span>${resume.position}</span>
-                                <div class="mt-20">
-                                    <c:forEach var="skill" items="${resume.skills}">
-                                        ${skill.name}
-<%--                                    <span class="badge badge-default">${skill.name}</span>--%>
-                                    </c:forEach>
-                                </div>
+                                <h5 class="mt-2 mb-0"><a class="hover-primary" href="${contextPath}/profile/${user.id}">${user.firstName} ${user.lastName}</a></h5>
+                                <span>${user.email}</span>
+
                             </div>
 
                             <footer class="card-footer flexbox">
 
                                 <div class="d-block gap-2 mt-2 ">
-                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/resume/${resume.user.id}">Просмотр резюме</a>
-                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/chats/chatWith/${resume.user.id}">Написать</a>
+                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/resume/${user.id}">Просмотр резюме</a>
+                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/chats/chatWith/${user.id}">Написать</a>
                                 </div>
 
-
-                                    <%--
-                                <div>
-                                    <i class="fa fa-map-marker pr-1"></i>
-                                    <span>Blackwood, NJ</span>
-                                </div>
-                                <div>
-                                    <i class="fa fa-money pr-1"></i>
-                                    <span>$55 / hour</span>
-                                </div>
---%>
                             </footer>
                         </div>
                     </div>

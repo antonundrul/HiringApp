@@ -53,7 +53,7 @@ public class UserController {
         UserDTO userDto = userService.findById(id);
 
         model.addAttribute("user", userDto);
-        return "/user/userPersonalCabinet";
+        return "/user/profile";
 //        return "/user/profile";
     }
 
@@ -87,7 +87,7 @@ public class UserController {
     }
 
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/users")
     public ModelAndView findAllUsers() {
         ModelAndView modelAndView = new ModelAndView();
@@ -102,7 +102,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     public String blockUser(@PathVariable(name = "id") Long id,
                             @RequestParam(required = false) String block,
-                            @RequestParam(required = false) String seller,
+                            @RequestParam(required = false) String hr,
                             @RequestParam(required = false) String admin) {
 
         UserDTO userDTO = userService.findById(id);
@@ -111,7 +111,7 @@ public class UserController {
                 userDTO.setBlocked(1);
             } else userDTO.setBlocked(0);
         }
-        if (Objects.nonNull(seller)) {
+        if (Objects.nonNull(hr)) {
             RoleDTO roleDto = new RoleDTO();
             roleDto.setName("ROLE_HR");
             roleDto.setId(3L);

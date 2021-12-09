@@ -16,19 +16,22 @@
 
 
 <main role="main" class="flex-shrink-0 container">
-
-    <p>Должность: ${vacancy.position}</p>
-    <p>Компания: ${vacancy.companyName}</p>
-    <p>Заработная плата: ${vacancy.salary}${vacancy.currency.code}</p>
-    <p>Тип: ${vacancy.jobType.name}</p>
-    <p>Навыки:
+<div style="margin-left: 300px">
+    <javatime:format value="${vacancy.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
+<br>
+    <p>Вакансия от ${createDate}</p>
+    <h1 class="display-4 fw-bold">${vacancy.position}</h1>
+    <h4> ${vacancy.salary}${vacancy.currency.code}</h4>
+    <p >Компания: ${vacancy.companyName}</p>
+    <p >Вид занятости: ${vacancy.jobType.name}</p>
+    <p >Навыки:
         <c:forEach var="a" items="${vacancy.skills}">
             ${a.name}
         </c:forEach>
     </p>
-    <p>Город: ${vacancy.city.name}</p>
-    <p>Требуемый опыт: ${vacancy.reqExperience}</p>
-    <p>Дата размещения: ${vacancy.createDate}</p>
+    <p >Город: ${vacancy.city.name}</p>
+    <p >Требуемый опыт: ${vacancy.reqExperience}</p>
+
 
         <sec:authorize access="isAuthenticated()">
             <div class="d-block gap-2 mt-2 ">
@@ -40,6 +43,7 @@
                 </c:if>
             </div>
         </sec:authorize>
+</div>
 </main>
 
 <%@ include file="/WEB-INF/jsp/util/footer.jsp" %>

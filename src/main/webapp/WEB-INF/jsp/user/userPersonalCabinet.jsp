@@ -21,23 +21,21 @@
 
     <div class="container">
 
+        <div class="d-block gap-2 mt-2 " style="margin-left: 300px">
+                <a href="${contextPath}/resume/add" class="btn btn-outline-dark">Добавить резюме</a>
+                <a href="${contextPath}/resume/${user.id}" class="btn btn-outline-dark">Просмотреть резюме</a>
+        </div>
 
         <form:form method="POST" class="form-signin" action="${contextPath}/update-user"
                    modelAttribute="user" enctype="multipart/form-data">
             <%@ include file="/WEB-INF/jsp/common/userDataForm.jsp" %>
 <br>
 <br>
-            <div class="row">
-                <div class="col-md-4">
-            <button class="btn btn-lg btn-warning btn-block" type="submit">Изменить</button>
+                <div >
+                    <button class="btn btn-lg btn-warning btn-block" type="submit">Изменить</button>
                 </div>
-                <div class="col-md-4">
-                    <a href="${contextPath}/resume/add" class="btn btn-outline-dark">Добавить резюме</a>
-                </div>
-                <div class="col-md-4">
-                    <a href="${contextPath}/resume/${user.id}" class="btn btn-outline-dark">Просмотреть резюме</a>
-                </div>
-                </div>
+
+
         </form:form>
     </div>
 

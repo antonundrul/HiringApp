@@ -5,7 +5,7 @@
 <head>
     <%@ include file="/WEB-INF/jsp/util/baseCss.jsp" %>
     <title>
-        Пользователи
+        Резюме
     </title>
 </head>
 
@@ -20,42 +20,45 @@
     <div class="container">
 
         <h2 class="display-4">
-            Пользователи
+            Все резюме
         </h2>
 
-            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead>
             <tr>
-                <th>Логин</th>
-                <th>Email</th>
                 <th>Имя</th>
                 <th>Фамилия</th>
-                <th>Права доступа</th>
-                <th>Управление</th>
+                <th>Должность</th>
+                <th>Навыки</th>
+                <th>Дата создания</th>
+                <th>Действия</th>
+
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="user" items="${users}">
+            <c:forEach var="resume" items="${resumes}">
                 <tr>
-                    <th>
-                            ${user.username}
-                    </th>
+
                     <td>
-                            ${user.email}
+                            ${resume.user.firstName}
                     </td>
                     <td>
-                            ${user.firstName}
+                            ${resume.user.lastName}
                     </td>
                     <td>
-                            ${user.lastName}
+                            ${resume.position}
                     </td>
                     <td>
-                        <c:forEach var="a" items="${user.roles}">
+                        <c:forEach var="a" items="${resume.skills}">
                             ${a.name}<br>
                         </c:forEach>
                     </td>
                     <td>
-                        <div class="dropdown">
+                            ${resume.createDate}
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.id}">Подробнее</a>
+                        <%--<div class="dropdown">
                             <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Действие
                             </button>
@@ -65,7 +68,7 @@
                                 <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?hr=1">Добавить/удалить права рекрутера</a></li>
                                 <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?admin=1">Добавить/удалить права администратора</a></li>
                             </ul>
-                        </div>
+                        </div>--%>
                     </td>
                 </tr>
             </c:forEach>

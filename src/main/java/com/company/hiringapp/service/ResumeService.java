@@ -14,6 +14,7 @@ public interface ResumeService {
     ResumeDTO findByid(Long id);
 
     List<ResumeDTO> findByCity(CityDTO cityDTO);
+    List<ResumeDTO> findAll();
 
     void update(ResumeDTO resumeDTO);
 }

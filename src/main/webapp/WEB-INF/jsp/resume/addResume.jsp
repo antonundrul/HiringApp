@@ -57,8 +57,9 @@
                 ${error}
         </h3>
 
-        <button class="btnContactSubmit" type="submit">Сохранить</button>
-        <a href="${contextPath}/skills/add" class="btnContactSubmit">Добавить навык</a>
+        <button class="btn btn-outline-dark" type="submit">Сохранить</button>
+        <a href="${contextPath}/skills/add" class="btn btn-outline-dark">Добавить навык</a>
+        <a href="${contextPath}/cities/add" class="btn btn-outline-dark">Добавить Город</a>
 
     </form:form>
 
