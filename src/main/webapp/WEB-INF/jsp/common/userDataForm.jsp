@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--<c:set var="imageRef" scope="session" value="https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg"/>--%>
+<c:set var="imageRef" scope="session" value="https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg"/>
 
 <%--<c:choose>
     <c:when test="${user.avatarName}='none' ">
@@ -9,7 +9,7 @@
 
     <c:otherwise>--%>
 <%--<c:if test="${user.avatar} ne ''">--%>
-    <c:set var="imageRef" scope="session" value="${contextPath}/resources/images/${user.avatarName}"/>
+<%--    <c:set var="imageRef" scope="session" value="${contextPath}/resources/images/${user.avatarName}"/>--%>
 <%--</c:if>--%>
 <%--    </c:otherwise>
 </c:choose>--%>
@@ -27,10 +27,10 @@
                  alt="picture"
                  src="${imageRef}"/>
 
-            <spring:bind path="avatar">
-                <form:input id="file" type="file" path="avatar" onchange="loadFile(event)"
+            <%--<spring:bind path="imageUpdate">
+                <form:input id="imageUpdate" type="file" path="avatar" onchange="loadFile(event)"
                             disabled="${formDisabled}"/>
-                <form:errors path="avatar"/>
+                <form:errors path="imageUpdate"/>
             </spring:bind>
 
             <script>
@@ -41,13 +41,15 @@
                         URL.revokeObjectURL(output.src)
                     }
                 };
-            </script>
+            </script>--%>
         </div>
 
     </div>
 
 
     <div class="col-lg-8 col-md-8 col-sm-12 desc">
+<br>
+<br>
         <spring:bind path="username">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <label for="username">Имя пользователя: </label>
@@ -83,6 +85,7 @@
                 <form:errors path="email"/>
             </div>
         </spring:bind>
+
         <h3 class="has-error">
             ${error}
         </h3>

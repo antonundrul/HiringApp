@@ -1,6 +1,5 @@
 package com.company.hiringapp.dto;
 
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +11,12 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class ExperienceDTO extends AbstractDTO {
+public class ExperienceDTO2 extends AbstractDTO {
 
     private UserDTO user;
     private boolean isCurrentJob;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private  String startDate;
+    private String endDate;
     private String companyName;
     private String position;
     private String description;

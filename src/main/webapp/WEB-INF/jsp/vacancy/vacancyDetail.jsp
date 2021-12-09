@@ -17,17 +17,18 @@
 
 <main role="main" class="flex-shrink-0 container">
 
-    ${vacancy.position}<br>
-    ${vacancy.companyName}<br>
-    ${vacancy.salary}<br>
-    ${vacancy.currency.code}<br>
-    ${vacancy.jobType.name}<br>
+    <p>Должность: ${vacancy.position}</p>
+    <p>Компания: ${vacancy.companyName}</p>
+    <p>Заработная плата: ${vacancy.salary}${vacancy.currency.code}</p>
+    <p>Тип: ${vacancy.jobType.name}</p>
+    <p>Навыки:
         <c:forEach var="a" items="${vacancy.skills}">
             ${a.name}
-        </c:forEach><br>
-    ${vacancy.city.name}<br>
-    ${vacancy.reqExperience}<br>
-    ${vacancy.createDate}<br>
+        </c:forEach>
+    </p>
+    <p>Город: ${vacancy.city.name}</p>
+    <p>Требуемый опыт: ${vacancy.reqExperience}</p>
+    <p>Дата размещения: ${vacancy.createDate}</p>
 
         <sec:authorize access="isAuthenticated()">
             <div class="d-block gap-2 mt-2 ">

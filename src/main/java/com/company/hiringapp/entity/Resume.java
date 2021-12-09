@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "resume")
@@ -28,4 +30,16 @@ public class Resume extends AbstractEntity{
     private City city;
 
     private String position;
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = "resume_skills",
+            joinColumns = @JoinColumn(name = "resume_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(name = "resume_experiences",
+            joinColumns = @JoinColumn(name = "resume_id"),
+            inverseJoinColumns = @JoinColumn(name = "experience_id"))
+    private List<Experience> experiences = new ArrayList<>();
 }

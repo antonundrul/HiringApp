@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "experiences")
@@ -33,6 +35,9 @@ public class Experience extends AbstractEntity {
     @Column(name = "company_name")
     private String companyName;
 
+    @Column(name = "position")
+    private String position;
+
     @Column(name = "description")
     private String description;
 
@@ -40,5 +45,7 @@ public class Experience extends AbstractEntity {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @ManyToMany(mappedBy = "experiences")
+    private List<Resume>  resumes = new ArrayList<>();
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
@@ -37,6 +38,8 @@ public class VacancyController {
     private SkillService skillService;
     @Autowired
     private CurrencyService currencyService;
+    @Autowired
+    private ResumeService resumeService;
 
     @GetMapping("/vacancies")
     public ModelAndView getAll(Principal principal) {
@@ -180,7 +183,16 @@ public class VacancyController {
         VacancyDTO vacancyDTO = vacancyService.findById(id);
 
         modelAndView.setViewName("vacancy/responses");
+
+        List<ResumeDTO> responsesResume = new ArrayList<>();
+
+        for(UserDTO user: vacancyDTO.getResponses()){
+            responsesResume.add(resumeService.findByUser(user));
+        }
+
+
         modelAndView.addObject("users", vacancyDTO.getResponses());
+        modelAndView.addObject("resumes", responsesResume);
 
         return modelAndView;
     }

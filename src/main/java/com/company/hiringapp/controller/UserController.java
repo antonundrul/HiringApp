@@ -40,7 +40,7 @@ public class UserController {
 
         UserDTO userDto = userService.findByUsername(principal.getName());
 
-        model.addAttribute("user", userService.convertUserDTO(userDto));
+        model.addAttribute("user", userDto);
         return "/user/userPersonalCabinet";
 //        return "/user/profile";
     }

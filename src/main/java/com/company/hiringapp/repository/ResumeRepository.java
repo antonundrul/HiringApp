@@ -18,6 +18,6 @@ public interface ResumeRepository extends JpaRepository<Resume,Long>
 
     List<Resume> findByCity(City city);
 
-    List<Resume> findByUser(User user);
+    Resume findByUser(User user);
 
 }

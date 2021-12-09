@@ -33,9 +33,9 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeDTO> findByUser(UserDTO userDTO) {
+    public ResumeDTO findByUser(UserDTO userDTO) {
 
-        return resumeMapper.toDtoList(resumeRepository.findByUser(userMapper.toEntity(userDTO)));
+        return resumeMapper.toDto(resumeRepository.findByUser(userMapper.toEntity(userDTO)));
     }
 
     @Override
@@ -50,5 +50,12 @@ public class ResumeServiceImpl implements ResumeService {
 
         resumeRepository.save(resumeMapper.toEntity(resumeDTO));
 
+    }
+
+    @Override
+    public ResumeDTO findByid(Long id) {
+        Resume resume = resumeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+        return resumeMapper.toDto(resume);
     }
 }

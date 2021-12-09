@@ -10,7 +10,8 @@ public interface ResumeService {
 
     ResumeDTO save(ResumeDTO dto);
 
-    List<ResumeDTO> findByUser(UserDTO userDTO);
+    ResumeDTO findByUser(UserDTO userDTO);
+    ResumeDTO findByid(Long id);
 
     List<ResumeDTO> findByCity(CityDTO cityDTO);
 
