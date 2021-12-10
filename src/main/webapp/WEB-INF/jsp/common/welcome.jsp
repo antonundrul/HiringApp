@@ -97,26 +97,7 @@
     </div>
 
     <br>
-    <h2 class="display-4">
-        Как отследить посылку по трек-коду?
-    </h2>
-    <p class="lead text-justify">
-        Если обьяснить совсем просто, как говорится - на пальцах, то это работает следующим образом:
-    </p>
-    <ul class="lead text-justify">
-        <li>
-            находите и приобратаете нужный Вам товар;
-        </li>
-        <li>
-            узнаете в личном кабинете или на странице заказа трек-код;
-        </li>
-        <li>
-            вводите в форму трек номер Вашей посылки;
-        </li>
-        <li>
-            получаете всю необходимую информацию о перемещении отправления, месте и сроках доставки.
-        </li>
-    </ul>
+
 
     <div class="row ">
         <div class="col-lg-6">
@@ -135,14 +116,7 @@
             </p>
             <p><a class="btn btn-warning mx-auto d-block" href="${contextPath}/resumes">Перейти</a></p>
         </div>
-       <%-- <div class="col-lg-4">
-            <img src="/resources/images/paymentSystem.jpg" alt="user" width="200" height="170" class="rounded-circle mx-auto d-block">
-            <h3 class=" text-center">Платежные системы</h3>
-            <p class="lead text-justify">
-                Можем отследить посылку, купленную с использованием любой платежной системы.
-            </p>
-            <p><a  class="btn btn-warning mx-auto d-block" href="${contextPath}/systems">Перейти</a></p>
-        </div>--%>
+
     </div>
 
 </main>
