@@ -68,15 +68,8 @@ public class UserController {
             return goBackTo("user/userPersonalCabinet");
         }
         try {
-//            UserDTO userDto = userService.convertUserDTOwithPhoto(userDTOwithPhoto);
-            userDTO.setUsername(principal.getName());
-            /*String filename = userDTOwithPhoto.getAvatar().getOriginalFilename();
-            File dir = new File("C://Bsuir/7sem/coursework/HiringApp/src/main/webapp/resources/images");
-            if (filename != null) {
-                File avatar = (File) userDTOwithPhoto.getAvatar();
-                avatar.createNewFile();
-            }
-*/
+           userDTO.setUsername(principal.getName());
+
 
             userService.update(userDTO);
         } catch (ServiceException ex) {
@@ -130,6 +123,7 @@ public class UserController {
         userService.update(userDTO);
         return redirectTo("users");
     }
+
 
 
 }

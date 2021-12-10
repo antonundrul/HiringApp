@@ -14,6 +14,11 @@
                 <sec:authorize access="isAuthenticated()">
                     <li><a href="${contextPath}/chats" class="nav-link px-2 text-white">Мои диалоги</a></li>
                 </sec:authorize>
+
+                <sec:authorize access="isAuthenticated()&&hasAuthority('ROLE_ADMIN')">
+                    <li><a href="${contextPath}/companies/add" class="nav-link px-2 text-white">Зарегистрировать компанию</a></li>
+                    <li><a href="${contextPath}/recruiters/add" class="nav-link px-2 text-white">Мои диалоги</a></li>
+                </sec:authorize>
                 <li><a href="${contextPath}/about" class="nav-link px-2 text-white">О нас</a></li>
 
             </ul>
@@ -45,6 +50,8 @@
                         <li><a class="dropdown-item" href="#">Логин: ${userLogin.username}</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="${contextPath}/users">Управление пользователями</a></li>
+                        <li><a class="dropdown-item" href="${contextPath}/companies/add">Зарегистрировать компанию</a></li>
+                        <li><a class="dropdown-item" href="${contextPath}/recruiters/add">Зарегистрировать рекрутера</a></li>
                         <li><a class="dropdown-item" href="${contextPath}/statistics">Статистика</a></li>
                         <li><a class="dropdown-item" href="${contextPath}/personal-cabinet">Профиль</a></li>
                         <li><a class="dropdown-item" href="${contextPath}/logout">Выйти</a></li>
