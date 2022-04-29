@@ -57,7 +57,26 @@ public class AuthController {
         return modelAndView;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/registration")
+    public String registration(Model model,
+                               @Validated @ModelAttribute("userForm") SignUpRequest userForm,
+                               BindingResult bindingResult) {
+
+        if (checkBindingResult(bindingResult)) {
+            return goBackTo("common/registration");
+        }
+        try {
+            userService.signUp(userForm);
+        } catch (ServiceException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return goBackTo("common/registration");
+        }
+        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+        // return "common/welcome";
+        return redirectTo("personal-cabinet");
+    }
+
+    /*@PostMapping("/login")
     public String registration(Model model,
                                @Validated @ModelAttribute("userForm") SignUpRequest userForm,
                                BindingResult bindingResult) {
@@ -76,7 +95,7 @@ public class AuthController {
         return redirectTo("personal-cabinet");
     }
 
-
+*/
     @GetMapping({"/login"})
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
                               @RequestParam(value = "logout", required = false) String logout,
@@ -103,10 +122,6 @@ public class AuthController {
     public String welcome() {
         return "common/welcome";
     }
-
-
-
-
 
 
 }

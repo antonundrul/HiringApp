@@ -1,9 +1,7 @@
 package com.company.hiringapp.repository;
 
-import com.company.hiringapp.entity.City;
-import com.company.hiringapp.entity.JobType;
-import com.company.hiringapp.entity.User;
-import com.company.hiringapp.entity.Vacancy;
+import com.company.hiringapp.dto.RecruiterDTO;
+import com.company.hiringapp.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +14,6 @@ public interface VacancyRepository extends JpaRepository<Vacancy,Long> {
     Optional<Vacancy> findById(Long id);
 
     List<Vacancy> findByCity(City city);
-    List<Vacancy> findByRecruiter(User recruiter);
+    List<Vacancy> findByRecruiter(Recruiter recruiter);
     List<Vacancy> findByJobType(JobType jobType);
 }

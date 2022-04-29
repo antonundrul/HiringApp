@@ -25,8 +25,6 @@ public class ResumeController {
     @Autowired
     private ResumeService resumeService;
     @Autowired
-    private ResumeSkillSetService resumeSkillSetService;
-    @Autowired
     private UserService userService;
     @Autowired
     private ExperienceService experienceService;
@@ -74,7 +72,7 @@ public class ResumeController {
 
         resumeService.save(resumeDTO);
 
-        return redirectTo("user/userPersonalCabinet");
+        return redirectTo("personal-cabinet");
     }
 
 

@@ -28,8 +28,6 @@ public class Vacancy extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
-    @Column(name = "company_name")
-    private String companyName;
     @Column(name = "req_experience")
     private int reqExperience;
     @ManyToOne
@@ -37,7 +35,7 @@ public class Vacancy extends AbstractEntity{
     private City city;
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
-    private User recruiter;
+    private Recruiter recruiter;
     @ManyToOne
     @JoinColumn(name = "job_type_id")
     private JobType jobType;

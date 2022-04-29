@@ -11,5 +11,5 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class RecruiterDTO extends AbstractDTO{
     private UserDTO user;
-    private CompanyDTO companyDTO;
+    private CompanyDTO company;
 }

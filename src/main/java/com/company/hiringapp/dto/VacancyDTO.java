@@ -17,10 +17,9 @@ public class VacancyDTO extends AbstractDTO {
     private String description;
     private int salary;
     private CurrencyDTO currency;
-    private String companyName;
     private int reqExperience;
     private CityDTO city;
-    private UserDTO recruiter;
+    private RecruiterDTO recruiter;
     private JobTypeDTO jobType;
     private LocalDate createDate;
     private List<UserDTO> responses;

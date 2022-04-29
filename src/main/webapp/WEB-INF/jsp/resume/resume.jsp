@@ -38,7 +38,7 @@
     </c:forEach>
 
         <c:if test="${isCurrentUser}">
-            <a class="btn btn-outline-dark" href="${contextPath}/experiences/add/${resume.id}">Добавить опыт работы</a>
+            <a class="btn btn-outline-dark" href="${contextPath}/experiences/add/${resume.user.id}">Добавить опыт работы</a>
         </c:if>
    </div>
 </main>

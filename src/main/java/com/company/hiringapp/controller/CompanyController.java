@@ -28,6 +28,15 @@ public class CompanyController {
     private CompanyService companyService;
 
 
+    @GetMapping("/companies")
+    public ModelAndView сompanies() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("companies", companyService.findAll());
+        modelAndView.setViewName("company/companies");
+
+        return modelAndView;
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/companies/add")
     public ModelAndView addCompany() {

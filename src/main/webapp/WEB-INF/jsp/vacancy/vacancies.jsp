@@ -57,7 +57,7 @@
                                <a href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}" style="color: black"> ${vacancy.position}
                         </th>
                         <td>
-                                ${vacancy.companyName}
+                               <a href="${vacancy.recruiter.company.website}"> ${vacancy.recruiter.company.name}</a>
                         </td>
                         <td>
                                 ${vacancy.salary} ${vacancy.currency.code}
@@ -74,7 +74,8 @@
                                 ${vacancy.city.name}
                         </td>
                         <td>
-                                ${vacancy.createDate}
+                            <javatime:format value="${vacancy.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
+                                ${createDate}
                         </td>
                         <sec:authorize access="isAuthenticated()" >
                             <td>

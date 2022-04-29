@@ -11,14 +11,11 @@
             <ul class="nav col-6 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="${contextPath}/" class="nav-link px-2 text-white">Главная</a></li>
                 <li><a href="${contextPath}/vacancies" class="nav-link px-2 text-white">Вакансии</a></li>
+                <li><a href="${contextPath}/companies" class="nav-link px-2 text-white">Компании</a></li>
                 <sec:authorize access="isAuthenticated()">
                     <li><a href="${contextPath}/chats" class="nav-link px-2 text-white">Мои диалоги</a></li>
                 </sec:authorize>
 
-                <sec:authorize access="isAuthenticated()&&hasAuthority('ROLE_ADMIN')">
-                    <li><a href="${contextPath}/companies/add" class="nav-link px-2 text-white">Зарегистрировать компанию</a></li>
-                    <li><a href="${contextPath}/recruiters/add" class="nav-link px-2 text-white">Мои диалоги</a></li>
-                </sec:authorize>
                 <li><a href="${contextPath}/about" class="nav-link px-2 text-white">О нас</a></li>
 
             </ul>

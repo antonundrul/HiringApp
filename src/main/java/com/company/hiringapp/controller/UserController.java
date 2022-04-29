@@ -1,10 +1,12 @@
 package com.company.hiringapp.controller;
 
 
+import com.company.hiringapp.dto.RecruiterDTO;
 import com.company.hiringapp.dto.RoleDTO;
 import com.company.hiringapp.dto.UserDTO;
-import com.company.hiringapp.dto.UserDTOwithPhoto;
 import com.company.hiringapp.exception.ServiceException;
+import com.company.hiringapp.service.CompanyService;
+import com.company.hiringapp.service.RecruiterService;
 import com.company.hiringapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
 
@@ -26,12 +27,17 @@ import static com.company.hiringapp.controller.ControllerHelper.*;
 public class UserController {
 
     private final UserService userService;
+    private final CompanyService companyService;
+    private final RecruiterService recruiterService;
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CompanyService companyService, RecruiterService recruiterService) {
         this.userService = userService;
+        this.companyService = companyService;
+        this.recruiterService = recruiterService;
     }
+
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     @GetMapping("/personal-cabinet")
@@ -68,7 +74,7 @@ public class UserController {
             return goBackTo("user/userPersonalCabinet");
         }
         try {
-           userDTO.setUsername(principal.getName());
+            userDTO.setUsername(principal.getName());
 
 
             userService.update(userDTO);
@@ -124,6 +130,46 @@ public class UserController {
         return redirectTo("users");
     }
 
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/recruiters/add")
+    public ModelAndView addHR() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("recruiterForm", new RecruiterDTO());
+        modelAndView.addObject("users", userService.findAll());
+        modelAndView.addObject("companies", companyService.findAll());
+        modelAndView.setViewName("admin/user/addHR");
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/recruiters/add")
+    public String addHR(Model model,
+                        @Validated @ModelAttribute("recruiterForm") RecruiterDTO dto,
+                        BindingResult result,
+                        Principal principal) {
+        if (checkBindingResult(result)) {
+            model.addAttribute("recruiterForm", dto);
+            return "admin/user/addHR";
+        }
+
+        try {
+            Set<RoleDTO> roles = dto.getUser().getRoles();
+            RoleDTO roleDto = new RoleDTO();
+            roleDto.setName("ROLE_HR");
+            roleDto.setId(3L);
+            roles.add(roleDto);
+            dto.getUser().setRoles(roles);
+            userService.update(dto.getUser());
+            recruiterService.save(dto);
+        } catch (ServiceException e) {
+            model.addAttribute("message", e.getMessage());
+            return goBackTo("admin/user/addHR");
+        }
+
+        return redirectTo("");
+    }
 
 
 }

@@ -55,13 +55,13 @@
             <form:errors path="currency"/>
         </div>
     </spring:bind>
-    <spring:bind path="companyName">
+    <%--<spring:bind path="companyName">
         <div class="form-group  ${status.error ? 'has-error' : ''}">
             <form:input  type="text" path="companyName" class="form-control" placeholder="Название компании"
                          autofocus="true"/>
             <form:errors path="companyName"/>
         </div>
-    </spring:bind>
+    </spring:bind>--%>
     <spring:bind path="reqExperience">
         <div class="form-group  ${status.error ? 'has-error' : ''}">
             <p>Требуемый опыт</p>

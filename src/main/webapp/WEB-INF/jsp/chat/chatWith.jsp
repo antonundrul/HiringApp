@@ -75,7 +75,7 @@
                                                 <p class="pull-right">${chat.value.messages.get(chat.value.messages.size()-1).sendDateTime.toLocalTime()}</p>
                                             </div>
                                             <div class="contact_sec">
-                                                <p class="primary-font">${chat.value.messages.get(chat.value.messages.size()-1).message}</p> <span class="badge pull-right">3</span>
+                                                <p class="primary-font">${chat.value.messages.get(chat.value.messages.size()-1).message}</p> <%--<span class="badge pull-right">3</span>--%>
                                             </div>
                                         </div>
                                         </a>

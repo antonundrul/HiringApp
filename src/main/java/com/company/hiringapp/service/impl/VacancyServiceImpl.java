@@ -1,10 +1,7 @@
 package com.company.hiringapp.service.impl;
 
 import com.company.hiringapp.dto.*;
-import com.company.hiringapp.dto.mapper.CityMapper;
-import com.company.hiringapp.dto.mapper.JobTypeMapper;
-import com.company.hiringapp.dto.mapper.UserMapper;
-import com.company.hiringapp.dto.mapper.VacancyMapper;
+import com.company.hiringapp.dto.mapper.*;
 import com.company.hiringapp.entity.Vacancy;
 import com.company.hiringapp.exception.ResourceNotFoundException;
 import com.company.hiringapp.repository.VacancyRepository;
@@ -27,6 +24,8 @@ public class VacancyServiceImpl implements VacancyService {
     private CityMapper cityMapper;
     @Autowired
     private JobTypeMapper jobTypeMapper;
+    @Autowired
+    private RecruiterMapper recruiterMapper;
 
     @Override
     public VacancyDTO save(VacancyDTO dto) {
@@ -53,8 +52,8 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyDTO> findByRecruiter(UserDTO recruiterDto) {
-        return vacancyMapper.toDtoList(vacancyRepository.findByRecruiter(userMapper.toEntity(recruiterDto)));
+    public List<VacancyDTO> findByRecruiter(RecruiterDTO recruiterDto) {
+        return vacancyMapper.toDtoList(vacancyRepository.findByRecruiter(recruiterMapper.toEntity(recruiterDto)));
     }
 
     @Override

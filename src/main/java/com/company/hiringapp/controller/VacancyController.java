@@ -21,13 +21,10 @@ import static com.company.hiringapp.controller.ControllerHelper.*;
 
 
 @Controller
-//@RequestMapping("/vacancies")
 public class VacancyController {
 
     @Autowired
     private VacancyService vacancyService;
-    @Autowired
-    private VacancySkillSetService vacancySkillSetService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -40,6 +37,8 @@ public class VacancyController {
     private CurrencyService currencyService;
     @Autowired
     private ResumeService resumeService;
+    @Autowired
+    private RecruiterService recruiterService;
 
     @GetMapping("/vacancies")
     public ModelAndView getAll(Principal principal) {
@@ -62,10 +61,8 @@ public class VacancyController {
     public String vacancyDetail(Model model, @PathVariable(name = "id") Long id,Principal principal) {
 
         VacancyDTO vacancyDTO = vacancyService.findById(id);
-        List<VacancySkillSetDTO> vacancySkillSetDTOList = vacancySkillSetService.findByResume(vacancyDTO);
 
         model.addAttribute("vacancy", vacancyDTO);
-//        model.addAttribute("skillList", vacancySkillSetDTOList);
         if (principal != null) {
             model.addAttribute("user", userService.findByUsername(principal.getName()));
             if(vacancyDTO.getResponses().size()!=0) {
@@ -104,15 +101,13 @@ public class VacancyController {
         return redirectTo("vacancies");
     }
 
-    @PreAuthorize("hasAuthority('ROLE_HR')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/vacancies/myResponses")
     public ModelAndView myResponses(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("vacancy/vacancies");
         UserDTO user = userService.findByUsername(principal.getName());
-
-//        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
         modelAndView.addObject("vacancies", vacancyService.myResponses(user));
         modelAndView.addObject("user", user);
 
@@ -126,9 +121,8 @@ public class VacancyController {
 
         modelAndView.setViewName("vacancy/vacancies");
         UserDTO user = userService.findByUsername(principal.getName());
-
-//        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
-        modelAndView.addObject("vacancies", vacancyService.findByRecruiter(user));
+        RecruiterDTO recruiterDTO = recruiterService.findByUser(user);
+        modelAndView.addObject("vacancies", vacancyService.findByRecruiter(recruiterDTO));
         modelAndView.addObject("user", user);
 
         return modelAndView;
@@ -159,8 +153,8 @@ public class VacancyController {
                                    BindingResult bindingResult,
                                    Principal principal) {
          UserDTO userDTO = userService.findByUsername(principal.getName());
-
-        vacancyDTO.setRecruiter(userDTO);
+        RecruiterDTO recruiterDTO = recruiterService.findByUser(userDTO);
+        vacancyDTO.setRecruiter(recruiterDTO);
         vacancyDTO.setCreateDate(LocalDate.now());
 
         vacancyService.save(vacancyDTO);

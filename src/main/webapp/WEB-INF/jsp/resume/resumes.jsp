@@ -57,7 +57,7 @@
                             ${resume.createDate}
                     </td>
                     <td>
-                        <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.id}">Подробнее</a>
+                        <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.user.id}">Подробнее</a>
                         <%--<div class="dropdown">
                             <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Действие

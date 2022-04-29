@@ -11,7 +11,7 @@ public interface VacancyService {
     VacancyDTO findById(Long id);
 
     List<VacancyDTO> findAll();
-    List<VacancyDTO> findByRecruiter(UserDTO recruiterDto);
+    List<VacancyDTO> findByRecruiter(RecruiterDTO recruiterDto);
 
     List<VacancyDTO> findByCity(CityDTO cityDto);
 
