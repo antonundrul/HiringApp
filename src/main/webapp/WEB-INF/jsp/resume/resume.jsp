@@ -16,8 +16,8 @@
 
 
 <main role="main" class="flex-shrink-0 container">
-
-   <div style="margin-left: 300px">
+<div class="row">
+   <div class="col-sm-8" >
        <br>
     <h2 class="display-4">
         ${user.firstName} ${user.lastName}
@@ -40,7 +40,32 @@
         <c:if test="${isCurrentUser}">
             <a class="btn btn-outline-dark" href="${contextPath}/experiences/add/${resume.user.id}">Добавить опыт работы</a>
         </c:if>
+
+
    </div>
+    <sec:authorize access="isAuthenticated() && hasAuthority('ROLE_HR')">
+    <div class="col-sm-4" style="border-left-width: medium">
+        <br>
+        <h6 class="display-6">Если вы уже общались с данным кандидатом <strong class="fw-bold">оставьте свой отзыв о нём</strong></h6>
+        <br>
+        <form:form method="POST" modelAttribute="reviewForm" >
+            <spring:bind path="comment">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <form:textarea cssStyle="height: 150px; width: 400px" path="comment" class="form-control" placeholder="Комментарий:"
+                                   autofocus="true"/>
+                    <form:errors path="comment"/>
+                </div>
+            </spring:bind>
+            <span style="color:red" >
+                    ${message}
+            </span>
+
+            <button class="btn  btn-outline-dark" type="submit">Сохранить</button>
+            <a class="btn btn-outline-dark" href="${contextPath}/reviews/${resume.user.id}">Отзывы</a>
+        </form:form>
+    </div>
+    </sec:authorize>
+</div>
 </main>
 
 <%@ include file="/WEB-INF/jsp/util/footer.jsp" %>

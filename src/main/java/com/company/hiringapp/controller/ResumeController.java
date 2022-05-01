@@ -1,6 +1,7 @@
 package com.company.hiringapp.controller;
 
 import com.company.hiringapp.dto.*;
+import com.company.hiringapp.exception.ServiceException;
 import com.company.hiringapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +33,10 @@ public class ResumeController {
     private CityService cityService;
     @Autowired
     private SkillService skillService;
+    @Autowired
+    private RecruiterService recruiterService;
+    @Autowired
+    private ResumeReviewService resumeReviewService;
 
 
     @GetMapping("/resumes")
@@ -96,10 +101,39 @@ public class ResumeController {
         modelAndView.addObject("isCurrentUser", isCurrentUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("resume", resume);
+        modelAndView.addObject("reviewForm", new ResumeReviewDTO());
 
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated() && hasRole('ROLE_HR')")
+    @PostMapping("/resume/{id}")
+    public String addReview(Model model,
+                            @PathVariable(name = "id") Long id,
+                          @Validated @ModelAttribute("reviewForm") ResumeReviewDTO dto,
+                          BindingResult result,
+                          Principal principal) {
+        if (checkBindingResult(result)) {
+            model.addAttribute("reviewForm", dto);
+            return "resume/resume";
+        }
+
+        try {
+            UserDTO userDTO = userService.findByUsername(principal.getName());
+            RecruiterDTO recruiter = recruiterService.findByUser(userDTO);
+            ResumeDTO resume = resumeService.findByUser(userService.findById(id));
+
+            dto.setRecruiter(recruiter);
+            dto.setResume(resume);
+            dto.setDateCreated(LocalDate.now());
+            resumeReviewService.save(dto);
+        } catch (ServiceException e) {
+            model.addAttribute("message", e.getMessage());
+            return goBackTo("resume/resume");
+        }
+
+        return redirectTo("resume/"+id);
+    }
 
     /*@GetMapping("/vacancies/delete/{id}")
     public String delete(@PathVariable Long id, Principal principal) {
