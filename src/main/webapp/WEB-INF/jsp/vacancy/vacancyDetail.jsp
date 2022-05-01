@@ -19,7 +19,16 @@
 <div style="margin-left: 300px">
     <javatime:format value="${vacancy.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
 <br>
-    <p>Вакансия от ${createDate}</p>
+    <c:set var = "status" scope = "session" value = "${vacancy.status.name()}"/>
+
+    <p>Вакансия от ${createDate}   Статус:
+        <c:if test="${status.equals('OPEN')}"><strong style="color: #20c997">Открыта</strong></c:if>
+        <c:if test="${status.equals('PAUSE')}"><strong style="color: orange">Приостановлена</strong></c:if>
+        <c:if test="${status.equals('CANCELED')}"><strong style="color: blueviolet">Отменена</strong></c:if>
+        <c:if test="${status.equals('CLOSED')}"><strong style="color: red">Закрыта</strong></c:if>
+
+    </p>
+
     <h1 class="display-4 fw-bold">${vacancy.position}</h1>
     <h4> ${vacancy.salary}${vacancy.currency.code}</h4>
     <p >Описание: ${vacancy.description}</p>
@@ -35,14 +44,35 @@
 
 
         <sec:authorize access="isAuthenticated()">
-            <div class="d-block gap-2 mt-2 ">
-                <a type="button" class="btn btn-warning <c:if test="${vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/subscribe">Откликнуться</a>
-                <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/unsubscribe">Отменить отклик</a>
-                <c:if test="${vacancy.recruiter.user.id.equals(user.id)}">
-                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/responses/${vacancy.id}">Показать отклики</a>
-                    <a type="button" class="btn btn-danger" href="${contextPath}/vacancies/delete/${vacancy.id}">Удалить</a>
-                </c:if>
-            </div>
+
+            <table>
+                <tr>
+                    <td>
+                        <a type="button" class="btn btn-warning <c:if test="${vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies   /${vacancy.id}/unsubscribe">Отменить отклик</a>
+                    </td>
+                    <c:if test="${vacancy.recruiter.user.id.equals(user.id)}">
+                    <td>
+                        <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/responses/${vacancy.id}">Показать отклики</a>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Изменить статус
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="${contextPath}/vacancies/${vacancy.id}/changeStatus?open=1">Открыта</a></li>
+                                <li><a class="dropdown-item" href="${contextPath}/vacancies/${vacancy.id}/changeStatus?pause=1">Приостановлена</a></li>
+                                <li><a class="dropdown-item" href="${contextPath}/vacancies/${vacancy.id}/changeStatus?cancel=1">Отменена</a></li>
+                                <li><a class="dropdown-item" href="${contextPath}/vacancies/${vacancy.id}/changeStatus?close=1">Закрыта</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    </c:if>
+                </tr>
+            </table>
         </sec:authorize>
 </div>
 </main>

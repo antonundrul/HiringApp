@@ -42,6 +42,7 @@
                     <th>Навыки</th>
                     <th>Город</th>
                     <th>Дата создания</th>
+                    <th>Статус</th>
                     <sec:authorize access="isAuthenticated()" >
                     <th>Откликнуться</th>
                     </sec:authorize>
@@ -77,13 +78,18 @@
                             <javatime:format value="${vacancy.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
                                 ${createDate}
                         </td>
+                        <c:set var = "status" scope = "session" value = "${vacancy.status.name()}"/>
+                        <c:if test="${status.equals('OPEN')}"><td style="background-color: #20c997">Открыта</td></c:if>
+                        <c:if test="${status.equals('PAUSE')}"><td style="background-color: orange">Приостановлена</td></c:if>
+                        <c:if test="${status.equals('CANCELED')}"><td style="background-color: blueviolet">Отменена</td></c:if>
+                        <c:if test="${status.equals('CLOSED')}"><td style="background-color: red">Закрыта</td></c:if>
                         <sec:authorize access="isAuthenticated()" >
                             <td>
                                 <c:if test="${!vacancy.responses.contains(user)}">
-                                    <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/subscribe">Откликнуться</a>
+                                    <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
                                 </c:if>
                                 <c:if test="${vacancy.responses.contains(user)}">
-                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}/unsubscribe">Отменить отклик</a>
+                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/${vacancy.id}/unsubscribe">Отменить отклик</a>
                                 </c:if>
                             </td>
                         </sec:authorize>

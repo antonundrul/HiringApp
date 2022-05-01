@@ -1,5 +1,6 @@
 package com.company.hiringapp.dto;
 
+import com.company.hiringapp.entity.VacancyStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,5 @@ public class VacancyDTO extends AbstractDTO {
     private LocalDate createDate;
     private List<UserDTO> responses;
     private List<SkillDTO> skills;
+    private VacancyStatus status;
 }

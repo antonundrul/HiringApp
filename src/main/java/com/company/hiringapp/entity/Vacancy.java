@@ -41,9 +41,11 @@ public class Vacancy extends AbstractEntity{
     private JobType jobType;
     @Column(name = "create_date")
     private LocalDate createDate;
+    @Column(name = "status")
+    private VacancyStatus status;
 
     @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(name = "vacancies_users",
+    @JoinTable(name = "vacancies_observers",
             joinColumns = @JoinColumn(name = "vacancy_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> responses = new ArrayList<>();

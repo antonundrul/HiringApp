@@ -22,8 +22,8 @@
             <h2>
                 ${message}
 
-                <a href="${pageContext.request.contextPath}/flights">
-                    Назад
+                <a href="${pageContext.request.contextPath}/welcome">
+                    На главную
                 </a>
             </h2>
 

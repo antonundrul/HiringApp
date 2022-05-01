@@ -1,6 +1,7 @@
 package com.company.hiringapp.controller;
 
 import com.company.hiringapp.dto.*;
+import com.company.hiringapp.entity.VacancyStatus;
 import com.company.hiringapp.exception.ServiceException;
 import com.company.hiringapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
 
@@ -80,8 +82,35 @@ public class VacancyController {
         return "/vacancy/vacancyDetail";
     }
 
+    @PreAuthorize("hasRole('ROLE_HR')")
+    @GetMapping("/vacancies/{id}/changeStatus")
+    public String changeVacancyStatus(@PathVariable(name = "id") Long id,
+                            @RequestParam(required = false) String open,
+                            @RequestParam(required = false) String pause,
+                            @RequestParam(required = false) String cancel,
+                            @RequestParam(required = false) String close) {
+
+        VacancyDTO vacancyDTO = vacancyService.findById(id);
+        if (Objects.nonNull(open)) {
+            vacancyDTO.setStatus(VacancyStatus.OPEN);
+        }
+        if (Objects.nonNull(pause)) {
+            vacancyDTO.setStatus(VacancyStatus.PAUSE);
+        }
+        if (Objects.nonNull(cancel)) {
+            vacancyDTO.setStatus(VacancyStatus.CANCELED);
+        }
+        if (Objects.nonNull(close)) {
+            vacancyDTO.setStatus(VacancyStatus.CLOSED);
+        }
+
+//        vacancyService.update(vacancyDTO);
+        vacancyService.save(vacancyDTO);
+        return redirectTo("vacancies/vacancyDetail/"+id);
+    }
+
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping("/vacancies/vacancyDetail/{id}/subscribe")
+    @RequestMapping("/vacancies/{id}/subscribe")
     public String subscribe(@PathVariable(name = "id") Long id,
                             Principal principal) {
 
@@ -91,14 +120,14 @@ public class VacancyController {
         return redirectTo("vacancies/vacancyDetail/"+id);
     }
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping("/vacancies/vacancyDetail/{id}/unsubscribe")
+    @RequestMapping("/vacancies/{id}/unsubscribe")
     public String unsubscribe(@PathVariable(name = "id") Long id,
                               Principal principal) {
 
         UserDTO userDTO = userService.findByUsername(principal.getName());
         vacancyService.removeResponse(id, userDTO);
 
-        return redirectTo("vacancies");
+        return redirectTo("vacancies/vacancyDetail/"+id);
     }
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -156,7 +185,7 @@ public class VacancyController {
         RecruiterDTO recruiterDTO = recruiterService.findByUser(userDTO);
         vacancyDTO.setRecruiter(recruiterDTO);
         vacancyDTO.setCreateDate(LocalDate.now());
-
+        vacancyDTO.setStatus(VacancyStatus.OPEN);
         vacancyService.save(vacancyDTO);
 
         return redirectTo("vacancies/myVacancies");
