@@ -51,7 +51,7 @@
                         <a type="button" class="btn btn-warning <c:if test="${vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
                     </td>
                     <td>
-                        <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies   /${vacancy.id}/unsubscribe">Отменить отклик</a>
+                        <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/${vacancy.id}/unsubscribe">Отменить отклик</a>
                     </td>
                     <c:if test="${vacancy.recruiter.user.id.equals(user.id)}">
                     <td>
