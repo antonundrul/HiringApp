@@ -26,4 +26,6 @@ public class Message extends AbstractEntity {
     private User sender;
     @Column(name = "send_date_time")
     private LocalDateTime sendDateTime;
+    @Column(name = "seen")
+    private boolean isSeen;
 }

@@ -94,7 +94,8 @@
     </spring:bind>
     <spring:bind path="skills">
         <div class="form-group ${status.error ? 'has-error' : ''}">
-            <form:select id="skills" path="skills" class="form-control" multiple="true">
+            <p>Навыки</p>
+            <form:select id="skills" path="skills" class="form-control" multiple="true" >
 <%--                <form:option value="0" label="Навыки"/>--%>
                 <form:options items="${skills}"
                               itemLabel="name"

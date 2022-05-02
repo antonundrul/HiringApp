@@ -51,8 +51,6 @@
                 </thead>
                 <tbody>
                 <c:forEach var="vacancy" items="${vacancies}">
-<%--                    <javatime:format value="${vacancy.vacancy.createDate}" style="SS" var="dateCreated"/>--%>
-
                     <tr>
                         <th>
                                <a href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}" style="color: black"> ${vacancy.position}
@@ -79,10 +77,10 @@
                                 ${createDate}
                         </td>
                         <c:set var = "status" scope = "session" value = "${vacancy.status.name()}"/>
-                        <c:if test="${status.equals('OPEN')}"><td style="background-color: #20c997">Открыта</td></c:if>
-                        <c:if test="${status.equals('PAUSE')}"><td style="background-color: orange">Приостановлена</td></c:if>
-                        <c:if test="${status.equals('CANCELED')}"><td style="background-color: blueviolet">Отменена</td></c:if>
-                        <c:if test="${status.equals('CLOSED')}"><td style="background-color: red">Закрыта</td></c:if>
+                        <c:if test="${status.equals('OPEN')}"><td style="background-color: #b1dfbb">Открыта</td></c:if>
+                        <c:if test="${status.equals('PAUSE')}"><td style="background-color: #ffdf7e ">Приостановлена</td></c:if>
+                        <c:if test="${status.equals('CANCELED')}"><td style="background-color: #b6d4fe">Отменена</td></c:if>
+                        <c:if test="${status.equals('CLOSED')}"><td style="background-color: #ed969e">Закрыта</td></c:if>
                         <sec:authorize access="isAuthenticated()" >
                             <td>
                                 <c:if test="${!vacancy.responses.contains(user)}">
@@ -93,26 +91,11 @@
                                 </c:if>
                             </td>
                         </sec:authorize>
-                       <%-- <td>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Действие
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?block=1">${user.blocked == 1 ? "Разблокировать" : "Заблокировать"}</a></li>
-                                    <li><a class="dropdown-item" href="${contextPath}/chats/chatWith/${user.id}">Написать</a></li>
-                                    <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?seller=1">Добавить/удалить права продавца</a></li>
-                                    <li><a class="dropdown-item" href="${contextPath}/users/${user.id}?admin=1">Добавить/удалить права администратора</a></li>
-                                </ul>
-                            </div>
-                        </td>--%>
+
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-<%--        </div>--%>
-
-
 </main>
 
 <%@ include file="/WEB-INF/jsp/util/footer.jsp" %>

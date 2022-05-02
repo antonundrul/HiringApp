@@ -25,6 +25,6 @@ public interface ChatService {
     HashMap<UserDTO,ChatDTO> getChats(UserDTO userDto);
 
     ChatDTO findByUsers(Long firstUserId, Long secondUserId);
-
+    int countUnseenMessages(Long chatId, UserDTO receiver);
     void delete(Long id);
 }

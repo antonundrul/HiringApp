@@ -9,6 +9,7 @@ import com.company.hiringapp.entity.Message;
 import com.company.hiringapp.exception.ResourceNotFoundException;
 import com.company.hiringapp.repository.ChatRepository;
 import com.company.hiringapp.service.ChatService;
+import com.company.hiringapp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +18,9 @@ import java.util.stream.Stream;
 
 @Service
 public class ChatServiceImpl implements ChatService {
-    private ChatRepository chatRepository;
-    private ChatMapper chatMapper;
-
-    @Autowired
-    public ChatServiceImpl(ChatRepository chatRepository,
-                           ChatMapper chatMapper) {
-        this.chatRepository = chatRepository;
-        this.chatMapper = chatMapper;
-    }
+    @Autowired private ChatRepository chatRepository;
+    @Autowired private ChatMapper chatMapper;
+    @Autowired private MessageService messageService;
 
     /*@Override
     public boolean isPresent(UserDTO firstUser, UserDTO secondUser) {
@@ -58,13 +53,17 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatDTO> findAllForUser(UserDTO userDto) {
-        List<Chat> chats = chatRepository.findAll();
+        List<ChatDTO> allChats = chatMapper.toDtoList(chatRepository.findAll());
+        List<ChatDTO> userChats = new ArrayList<>();
 
-        chats.stream()
-                .filter(i->i.getFirstUser().equals(userDto)||i.getSecondUser().equals(userDto));
+        for(ChatDTO chat : allChats){
+            if(chat.getFirstUser().equals(userDto) || chat.getSecondUser().equals(userDto)){
+                userChats.add(chat);
+            }
+        }
 
 
-        return chatMapper.toDtoList(chats);
+        return userChats;
     }
 
     @Override
@@ -75,7 +74,7 @@ public class ChatServiceImpl implements ChatService {
             if(chat.getFirstUser().equals(user)){
                 interlocutors.add(chat.getSecondUser());
             }
-            else{
+            if(chat.getSecondUser().equals(user)){
                 interlocutors.add(chat.getFirstUser());
             }
         }
@@ -86,17 +85,17 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public HashMap<UserDTO, ChatDTO> getChats(UserDTO userDto) {
 
-        Chat allChats = chatRepository.findAll().get(0);
+        List<ChatDTO> allChats = chatMapper.toDtoList(chatRepository.findAll());
+        List<ChatDTO> userChats = new ArrayList<>();
 
-
-
-        List<ChatDTO> chats = chatMapper.toDtoList(chatRepository.findAll());
-        chats.stream()
-                .filter(i->i.getFirstUser().equals(userDto)||i.getSecondUser().equals(userDto));
-
+        for(ChatDTO chat : allChats){
+            if(chat.getFirstUser().equals(userDto) || chat.getSecondUser().equals(userDto)){
+                userChats.add(chat);
+            }
+        }
 
         List<UserDTO> interlocutors = new ArrayList<>();
-        for(ChatDTO chat: chats){
+        for(ChatDTO chat: userChats){
             if(chat.getFirstUser().equals(userDto)){
                 interlocutors.add(chat.getSecondUser());
             }
@@ -107,8 +106,8 @@ public class ChatServiceImpl implements ChatService {
 
 
         HashMap<UserDTO,ChatDTO> chatMap = new HashMap<>();
-        for(int i =0;i<chats.size();i++){
-            chatMap.put(interlocutors.get(i),chats.get(i));
+        for(int i =0;i<userChats.size();i++){
+            chatMap.put(interlocutors.get(i),userChats.get(i));
         }
         return chatMap;
     }
@@ -119,8 +118,8 @@ public class ChatServiceImpl implements ChatService {
         Chat result = new Chat();
 
         for(Chat chat:allChats){
-            if((chat.getFirstUser().getId()==firstUserId&&chat.getSecondUser().getId()==secondUserId)
-                    ||(chat.getFirstUser().getId()==secondUserId&&chat.getSecondUser().getId()==firstUserId)){
+            if((chat.getFirstUser().getId().equals(firstUserId) && chat.getSecondUser().getId().equals(secondUserId))
+                    ||(chat.getFirstUser().getId().equals(secondUserId) && chat.getSecondUser().getId().equals(firstUserId))){
                 result=chat;
                 break;
             }
@@ -134,4 +133,13 @@ public class ChatServiceImpl implements ChatService {
         Chat chat = chatRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         chatRepository.delete(chat);
     }
+
+    @Override
+    public List<Integer> countUnseenMessages(List<ChatDTO> chats, UserDTO receiver) {
+       List<Integer> amountsOfUnseenMessages = new ArrayList<>();
+
+
+
+    }
+
 }

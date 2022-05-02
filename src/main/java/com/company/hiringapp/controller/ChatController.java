@@ -61,6 +61,7 @@ public class ChatController {
 
         HashMap<UserDTO,ChatDTO> chats = chatService.getChats(userDTO);
         modelAndView.addObject("chats",chats);
+        modelAndView.addObject("now",LocalDateTime.now());
 
         return modelAndView;
     }
@@ -78,6 +79,7 @@ public class ChatController {
         modelAndView.addObject("chats",chats);
         modelAndView.addObject("toUser",toUserDTO);
         modelAndView.addObject("messageForm",new MessageDTO());
+        modelAndView.addObject("now",LocalDateTime.now());
         ChatDTO chatDTO = chatService.findByUsers(userDTO.getId(),toUserId);
         if(chatDTO.getId()!=null) {
             modelAndView.addObject("messages", messageService.findByChat(chatDTO));

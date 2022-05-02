@@ -16,4 +16,5 @@ public class MessageDTO extends AbstractDTO{
     private ChatDTO chat;
     private UserDTO sender;
     private LocalDateTime sendDateTime;
+    private boolean isSeen;
 }

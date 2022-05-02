@@ -15,8 +15,8 @@
 <%@ include file="/WEB-INF/jsp/util/header.jsp" %>
 
 
-<main role="main" class="flex-shrink-0">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<main role="main" class="flex-shrink-0 container">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css1">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
@@ -62,6 +62,8 @@
                         <div class="member_list">
                             <ul class="list-unstyled">
                                 <c:forEach var="chat" items="${chats}">
+                                    <c:set var="lastMessage" scope = "session" value="${chat.value.messages.get(chat.value.messages.size()-1)}"/>
+
                                     <li class="left clearfix">
 
                                         <a href="${contextPath}/chats/chatWith/${chat.key.id}" style="color: black">
@@ -72,10 +74,17 @@
                                             <div class="header_sec">
 
                                                 <strong class="primary-font">${chat.key.firstName} ${chat.key.lastName}</strong>
-                                                <p class="pull-right">${chat.value.messages.get(chat.value.messages.size()-1).sendDateTime.toLocalTime()}</p>
+
+                                               <c:if test="${lastMessage.sendDateTime.toLocalDate().equals(now.toLocalDate())}">
+                                                   <p class="pull-right">${lastMessage.sendDateTime.hour}:${lastMessage.sendDateTime.minute}</p>
+                                               </c:if>
+                                               <c:if test="${!lastMessage.sendDateTime.toLocalDate().equals(now.toLocalDate())}">
+                                                   <p class="pull-right">${lastMessage.sendDateTime.month.name().toLowerCase().substring(0,3)} ${lastMessage.sendDateTime.dayOfMonth}</p>
+                                               </c:if>
+
                                             </div>
                                             <div class="contact_sec">
-                                                <p class="primary-font">${chat.value.messages.get(chat.value.messages.size()-1).message}</p> <%--<span class="badge pull-right">3</span>--%>
+                                                <p class="primary-font">${lastMessage.message}</p> <%--<span class="badge pull-right">3</span>--%>
                                             </div>
                                         </div>
                                         </a>
@@ -111,12 +120,58 @@
 
                         <div class="chat_area">
                             <ul class="list-unstyled">
-            <c:forEach var="message" items="${messages}">
-                <c:choose>
+
+
+
+
+
+
+
+
+
+                                <div class="px-0">
+                                    <div class="px-4 py-5 chat-box bg-white">
+
+                                        <c:forEach var="message" items="${messages}">
+
+                                            <!-- Sender Message-->
+                                        <c:if test="${message.sender.id.equals(toUser.id)}">
+                                            <div class="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                                                <div class="media-body ml-3">
+                                                    <div class="bg-light rounded py-2 px-3 mb-2">
+                                                        <p class="text-small mb-0 text-muted">${message.message}</p>
+                                                    </div>
+                                                    <p class="small text-muted">${message.sendDateTime.hour}:${message.sendDateTime.minute} | ${message.sendDateTime.month.name().toLowerCase().substring(0,3)} ${message.sendDateTime.dayOfMonth}</p>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
+                                        <!-- Reciever Message-->
+                                            <c:if test="${!message.sender.id.equals(toUser.id)}">
+                                                <div class="media w-50 ml-auto mb-3">
+                                                    <div class="media-body">
+                                                        <div class="bg-primary rounded py-2 px-3 mb-2">
+                                                            <p class="text-small mb-0 text-white">${message.message}</p>
+                                                        </div>
+                                                        <p class="small text-muted">${message.sendDateTime.hour}:${message.sendDateTime.minute} | ${message.sendDateTime.month.name().toLowerCase().substring(0,3)} ${message.sendDateTime.dayOfMonth}</p>
+                                                    </div>
+                                                </div>
+
+                                            </c:if>
+                                        </c:forEach>
+
+                                    </div>
+                                </div>
+
+
+
+
+                
+              <%--  <c:choose>
                     <c:when test="${message.sender.id}==${toUser.id}">
                                 <li class="left clearfix">
                      <span class="chat-img1 pull-left">
-<%--                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">--%>
+&lt;%&ndash;                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">&ndash;%&gt;
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>
@@ -127,7 +182,7 @@
                     <c:otherwise>
                                 <li class="left clearfix admin_chat">
                      <span class="chat-img1 pull-right">
-<%--                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">--%>
+&lt;%&ndash;                     <img src="${contextPath}/resources/images/${message.sender.avatar}" alt="User Avatar" class="img-circle">&ndash;%&gt;
                      </span>
                                     <div class="chat-body1 clearfix">
                                         <p>${message.message}</p>
@@ -135,8 +190,8 @@
                                     </div>
                                 </li>
                     </c:otherwise>
-                </c:choose>
-            </c:forEach>
+                </c:choose>--%>
+
                             </ul>
                         </div><!--chat_area-->
                         <div class="message_write">
