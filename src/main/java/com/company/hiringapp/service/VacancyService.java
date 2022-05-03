@@ -20,8 +20,8 @@ public interface VacancyService {
 
     void update(VacancyDTO vacancyDTO);
 
-    void addSkill(Long id,SkillDTO skill);
-    void removeSkill(Long id,SkillDTO skill);
+  /*  void addSkill(Long id,SkillDTO skill);
+    void removeSkill(Long id,SkillDTO skill);*/
 
 
     void addResponse(Long id, UserDTO dto);

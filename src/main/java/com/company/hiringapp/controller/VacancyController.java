@@ -15,9 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
 
@@ -41,11 +39,19 @@ public class VacancyController {
     private ResumeService resumeService;
     @Autowired
     private RecruiterService recruiterService;
+    @Autowired
+    private VacancySkillService vacancySkillService;
+    @Autowired
+    private LevelService levelService;
 
     @GetMapping("/vacancies")
     public ModelAndView getAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
+        HashMap<VacancyDTO,List<VacancySkillDTO>> vacancies = new HashMap<>();
+        for (VacancyDTO vacancy : vacancyService.findAll()){
+            vacancies.put(vacancy,vacancySkillService.findByVacancy(vacancy));
+        }
 
         if(principal!=null) {
             UserDTO userDTO = userService.findByUsername(principal.getName());
@@ -53,7 +59,7 @@ public class VacancyController {
         }
         modelAndView.setViewName("vacancy/vacancies");
 //        modelAndView.addObject("skillSet", vacancySkillSetService.groupByVacancies(vacancyService.findAll()));
-        modelAndView.addObject("vacancies", vacancyService.findAll());
+        modelAndView.addObject("vacancies", vacancies);
 
         return modelAndView;
     }
@@ -63,8 +69,9 @@ public class VacancyController {
     public String vacancyDetail(Model model, @PathVariable(name = "id") Long id,Principal principal) {
 
         VacancyDTO vacancyDTO = vacancyService.findById(id);
-
+        List<VacancySkillDTO> vacancySkillDTOList = vacancySkillService.findByVacancy(vacancyDTO);
         model.addAttribute("vacancy", vacancyDTO);
+        model.addAttribute("vacancySkillsList", vacancySkillDTOList);
         if (principal != null) {
             model.addAttribute("user", userService.findByUsername(principal.getName()));
             if(vacancyDTO.getResponses().size()!=0) {
@@ -170,7 +177,7 @@ public class VacancyController {
         modelAndView.addObject("jobTypes", jobTypeService.findAll());
         modelAndView.addObject("cities", cityService.findAll());
         modelAndView.addObject("currencies", currencyService.findAll());
-        modelAndView.addObject("skills", skillService.findAll());
+//        modelAndView.addObject("skills", skillService.findAll());
 
         return modelAndView;
     }
@@ -178,18 +185,50 @@ public class VacancyController {
     @PreAuthorize("hasAnyAuthority('ROLE_HR')")
     @PostMapping("/vacancies/addVacancy")
     public String addVacancy(Model model,
-                                   @Validated @ModelAttribute("vacancyForm") VacancyDTO vacancyDTO,
-                                   BindingResult bindingResult,
-                                   Principal principal) {
-         UserDTO userDTO = userService.findByUsername(principal.getName());
+                             @Validated @ModelAttribute("vacancyForm") VacancyDTO vacancyDTO,
+                             BindingResult bindingResult,
+                             Principal principal) {
+        UserDTO userDTO = userService.findByUsername(principal.getName());
         RecruiterDTO recruiterDTO = recruiterService.findByUser(userDTO);
         vacancyDTO.setRecruiter(recruiterDTO);
         vacancyDTO.setCreateDate(LocalDate.now());
         vacancyDTO.setStatus(VacancyStatus.OPEN);
         vacancyService.save(vacancyDTO);
 
-        return redirectTo("vacancies/myVacancies");
+        return redirectTo("vacancies/vacancyDetail/"+vacancyService.findAll().get(vacancyService.findAll().size()-1).getId());
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @GetMapping("/vacancies/{id}/addSkill")
+    public ModelAndView addSkill(Principal principal,
+                                        @PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        VacancyDTO vacancy = vacancyService.findById(id);
+        VacancySkillDTO vacancySkillDTO = new VacancySkillDTO();
+        vacancySkillDTO.setVacancy(vacancy);
+        modelAndView.setViewName("vacancy/chooseSkill");
+
+        modelAndView.addObject("vacancySkillForm", vacancySkillDTO);
+        modelAndView.addObject("skills", skillService.findAll());
+        modelAndView.addObject("levels", levelService.findAll());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @PostMapping("/vacancies/{id}/addSkill")
+    public String addSkill(Model model,
+                           @PathVariable Long id,
+                           @Validated @ModelAttribute("vacancySkillForm") VacancySkillDTO vacancySkillDTO,
+                           BindingResult bindingResult,
+                           Principal principal) {
+        VacancyDTO vacancy = vacancyService.findById(id);
+        vacancySkillDTO.setVacancy(vacancy);
+        vacancySkillService.save(vacancySkillDTO);
+        return redirectTo("vacancies/vacancyDetail/"+id);
+    }
+
 
     @PreAuthorize("hasAnyAuthority('ROLE_HR')")
     @GetMapping("/vacancies/delete/{id}")

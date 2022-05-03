@@ -53,41 +53,41 @@
                 <c:forEach var="vacancy" items="${vacancies}">
                     <tr>
                         <th>
-                               <a href="${contextPath}/vacancies/vacancyDetail/${vacancy.id}" style="color: black"> ${vacancy.position}
+                               <a href="${contextPath}/vacancies/vacancyDetail/${vacancy.key.id}" style="color: black"> ${vacancy.key.position}
                         </th>
                         <td>
-                               <a href="${vacancy.recruiter.company.website}"> ${vacancy.recruiter.company.name}</a>
+                               <a href="${vacancy.key.recruiter.company.website}"> ${vacancy.key.recruiter.company.name}</a>
                         </td>
                         <td>
-                                ${vacancy.salary} ${vacancy.currency.code}
+                                ${vacancy.key.salary} ${vacancy.key.currency.code}
                         </td>
                         <td>
-                                ${vacancy.jobType.name}
+                                ${vacancy.key.jobType.name}
                         </td>
                         <td>
-                             <c:forEach var="a" items="${vacancy.skills}">
-                                 ${a.name}<br>
+                             <c:forEach var="a" items="${vacancy.value}">
+                                 ${a.skill.name}(${a.level.name})<br>
                              </c:forEach>
                         </td>
                         <td>
-                                ${vacancy.city.name}
+                                ${vacancy.key.city.name}
                         </td>
                         <td>
-                            <javatime:format value="${vacancy.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
+                            <javatime:format value="${vacancy.key.createDate}"  pattern="dd.MM.yyyy" var="createDate"/>
                                 ${createDate}
                         </td>
-                        <c:set var = "status" scope = "session" value = "${vacancy.status.name()}"/>
+                        <c:set var = "status" scope = "session" value = "${vacancy.key.status.name()}"/>
                         <c:if test="${status.equals('OPEN')}"><td style="background-color: #b1dfbb">Открыта</td></c:if>
                         <c:if test="${status.equals('PAUSE')}"><td style="background-color: #ffdf7e ">Приостановлена</td></c:if>
                         <c:if test="${status.equals('CANCELED')}"><td style="background-color: #b6d4fe">Отменена</td></c:if>
                         <c:if test="${status.equals('CLOSED')}"><td style="background-color: #ed969e">Закрыта</td></c:if>
                         <sec:authorize access="isAuthenticated()" >
                             <td>
-                                <c:if test="${!vacancy.responses.contains(user)}">
-                                    <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
+                                <c:if test="${!vacancy.key.responses.contains(user)}">
+                                    <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/${vacancy.key.id}/subscribe">Откликнуться</a>
                                 </c:if>
-                                <c:if test="${vacancy.responses.contains(user)}">
-                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/${vacancy.id}/unsubscribe">Отменить отклик</a>
+                                <c:if test="${vacancy.key.responses.contains(user)}">
+                                    <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/${vacancy.key.id}/unsubscribe">Отменить отклик</a>
                                 </c:if>
                             </td>
                         </sec:authorize>

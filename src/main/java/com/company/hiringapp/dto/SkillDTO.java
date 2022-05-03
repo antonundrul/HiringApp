@@ -9,5 +9,4 @@ import lombok.*;
 @ToString
 public class SkillDTO extends AbstractDTO{
     private String name;
-
 }

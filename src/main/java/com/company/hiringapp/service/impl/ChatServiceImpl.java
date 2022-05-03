@@ -134,12 +134,4 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.delete(chat);
     }
 
-    @Override
-    public List<Integer> countUnseenMessages(List<ChatDTO> chats, UserDTO receiver) {
-       List<Integer> amountsOfUnseenMessages = new ArrayList<>();
-
-
-
-    }
-
 }

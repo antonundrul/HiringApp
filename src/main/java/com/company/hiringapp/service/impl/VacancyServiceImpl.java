@@ -66,17 +66,7 @@ public class VacancyServiceImpl implements VacancyService {
         return vacancyMapper.toDtoList(vacancyRepository.findByJobType(jobTypeMapper.toEntity(jobTypeDto)));
     }
 
-    @Override
-    public List<VacancyDTO> myResponses(UserDTO userDTO) {
-        List<VacancyDTO> vacancies = this.findAll();
-        List<VacancyDTO> responses = new ArrayList<>();
-        for(VacancyDTO vacancy:vacancies){
-            if(vacancy.getResponses().contains(userDTO)){
-                responses.add(vacancy);
-            }
-        }
-        return responses;
-    }
+
 
     @Override
     public void update(VacancyDTO vacancyDTO) {
@@ -87,7 +77,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     }
 
-    @Override
+   /* @Override
     public void addSkill(Long id, SkillDTO skill) {
         VacancyDTO vacancy = this.findById(id);
         List<SkillDTO> skills = vacancy.getSkills();
@@ -107,7 +97,7 @@ public class VacancyServiceImpl implements VacancyService {
             skills.remove(skill);
         }
         vacancyRepository.save(vacancyMapper.toEntity(vacancy));
-    }
+    }*/
 
     @Override
     public void addResponse(Long id, UserDTO dto) {
@@ -129,5 +119,17 @@ public class VacancyServiceImpl implements VacancyService {
             vacancy.getResponses().remove(dto);
         }
         vacancyRepository.save(vacancyMapper.toEntity(vacancy));
+    }
+
+    @Override
+    public List<VacancyDTO> myResponses(UserDTO userDTO) {
+        List<VacancyDTO> vacancies = this.findAll();
+        List<VacancyDTO> responses = new ArrayList<>();
+        for(VacancyDTO vacancy:vacancies){
+            if(vacancy.getResponses().contains(userDTO)){
+                responses.add(vacancy);
+            }
+        }
+        return responses;
     }
 }

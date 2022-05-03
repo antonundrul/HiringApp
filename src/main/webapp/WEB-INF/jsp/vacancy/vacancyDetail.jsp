@@ -34,11 +34,11 @@
     <p >Описание: ${vacancy.description}</p>
     <p >Компания: <a href="${vacancy.recruiter.company.website}"> ${vacancy.recruiter.company.name}</a></p>
     <p >Вид занятости: ${vacancy.jobType.name}</p>
-    <p >Навыки:
-        <c:forEach var="a" items="${vacancy.skills}">
-            ${a.name}
+    <h4 class="display-6" >Требуемые навыки:</h4>
+        <c:forEach var="a" items="${vacancySkillsList}">
+            ${a.skill.name}(${a.level.name})
         </c:forEach>
-    </p>
+
     <p >Город: ${vacancy.city.name}</p>
     <p >Требуемый опыт: ${vacancy.reqExperience}</p>
 
@@ -47,15 +47,22 @@
 
             <table>
                 <tr>
-                    <td>
-                        <a type="button" class="btn btn-warning <c:if test="${vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-warning <c:if test="${!vacancy.responses.contains(user)}">disabled</c:if>" href="${contextPath}/vacancies/${vacancy.id}/unsubscribe">Отменить отклик</a>
-                    </td>
+                    <c:if test="${vacancy.responses.contains(user)}">
+                        <td>
+                            <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/${vacancy.id}/unsubscribe">Отменить отклик</a>
+                        </td>
+                    </c:if>
+                    <c:if test="${!vacancy.responses.contains(user)}">
+                        <td>
+                            <a type="button" class="btn btn-warning" href="${contextPath}/vacancies/${vacancy.id}/subscribe">Откликнуться</a>
+                        </td>
+                    </c:if>
                     <c:if test="${vacancy.recruiter.user.id.equals(user.id)}">
                     <td>
                         <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/responses/${vacancy.id}">Показать отклики</a>
+                    </td>
+                    <td>
+                        <a href="${contextPath}/vacancies/${vacancy.id}/addSkill" class="btn btn-outline-dark">Добавить навык</a>
                     </td>
                     <td>
                         <div class="dropdown">

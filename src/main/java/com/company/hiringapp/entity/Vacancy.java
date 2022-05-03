@@ -50,10 +50,10 @@ public class Vacancy extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> responses = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    /*@ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "vacancies_skills",
             joinColumns = @JoinColumn(name = "vacancy_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills = new ArrayList<>();
+    private List<Skill> skills = new ArrayList<>();*/
 
 }
