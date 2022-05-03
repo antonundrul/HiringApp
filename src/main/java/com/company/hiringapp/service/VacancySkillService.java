@@ -13,4 +13,6 @@ public interface VacancySkillService {
     List<VacancySkillDTO> findByVacancy(VacancyDTO vacancyDTO);
 
     VacancySkillDTO save(VacancySkillDTO dto);
+
+    void delete(VacancySkillDTO dto);
 }

@@ -40,24 +40,24 @@
                 <tr>
 
                     <td>
-                            ${resume.user.firstName}
+                            ${resume.key.user.firstName}
                     </td>
                     <td>
-                            ${resume.user.lastName}
+                            ${resume.key.user.lastName}
                     </td>
                     <td>
-                            ${resume.position}
+                            ${resume.key.position}
                     </td>
                     <td>
-                        <c:forEach var="a" items="${resume.skills}">
-                            ${a.name}<br>
+                        <c:forEach var="a" items="${resume.value}">
+                            ${a.skill.name}(${a.level.name})<br>
                         </c:forEach>
                     </td>
                     <td>
-                            ${resume.createDate}
+                            ${resume.key.createDate}
                     </td>
                     <td>
-                        <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.user.id}">Подробнее</a>
+                        <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.key.user.id}">Подробнее</a>
                         <%--<div class="dropdown">
                             <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Действие

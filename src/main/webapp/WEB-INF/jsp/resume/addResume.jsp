@@ -41,17 +41,17 @@
                 <form:errors path="city"/>
             </div>
         </spring:bind>
-        <spring:bind path="skills">
+      <%--  <spring:bind path="skills">
             <div class="form-group ${status.error ? 'has-error' : ''}">
                 <form:select id="skills" path="skills" class="form-control" multiple="true">
-                    <%--                <form:option value="0" label="Навыки"/>--%>
+                    &lt;%&ndash;                <form:option value="0" label="Навыки"/>&ndash;%&gt;
                     <form:options items="${skills}"
                                   itemLabel="name"
                                   itemValue="id"/>
                 </form:select>
                 <form:errors path="skills"/>
             </div>
-        </spring:bind>
+        </spring:bind>--%>
 
         <h3>
                 ${error}

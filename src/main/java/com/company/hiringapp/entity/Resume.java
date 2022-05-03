@@ -31,11 +31,11 @@ public class Resume extends AbstractEntity{
 
     private String position;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
+   /* @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "resume_skills",
             joinColumns = @JoinColumn(name = "resume_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills = new ArrayList<>();
+    private List<Skill> skills = new ArrayList<>();*/
 
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "resume_experiences",

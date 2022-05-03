@@ -70,8 +70,8 @@ public class VacancyController {
 
         VacancyDTO vacancyDTO = vacancyService.findById(id);
         List<VacancySkillDTO> vacancySkillDTOList = vacancySkillService.findByVacancy(vacancyDTO);
-        model.addAttribute("vacancy", vacancyDTO);
         model.addAttribute("vacancySkillsList", vacancySkillDTOList);
+        model.addAttribute("vacancy", vacancyDTO);
         if (principal != null) {
             model.addAttribute("user", userService.findByUsername(principal.getName()));
             if(vacancyDTO.getResponses().size()!=0) {

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
@@ -37,14 +38,23 @@ public class ResumeController {
     private RecruiterService recruiterService;
     @Autowired
     private ResumeReviewService resumeReviewService;
+    @Autowired
+    private ResumeSkillService resumeSkillService;
+    @Autowired
+    private LevelService levelService;
 
 
     @GetMapping("/resumes")
     public ModelAndView findAllResumes(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
+        HashMap<ResumeDTO,List<ResumeSkillDTO>> resumes = new HashMap<>();
+        for (ResumeDTO resume : resumeService.findAll()){
+            resumes.put(resume,resumeSkillService.findByResume(resume));
+        }
+
         modelAndView.setViewName("resume/resumes");
-        modelAndView.addObject("resumes", resumeService.findAll());
+        modelAndView.addObject("resumes", resumes);
 
         return modelAndView;
     }
@@ -59,7 +69,7 @@ public class ResumeController {
 
         modelAndView.addObject("resumeForm", new ResumeDTO());
         modelAndView.addObject("cities", cityService.findAll());
-        modelAndView.addObject("skills", skillService.findAll());
+//        modelAndView.addObject("skills", skillService.findAll());
 
         return modelAndView;
     }
@@ -77,7 +87,38 @@ public class ResumeController {
 
         resumeService.save(resumeDTO);
 
-        return redirectTo("personal-cabinet");
+        return redirectTo("resume/"+resumeService.findAll().get(resumeService.findAll().size()-1).getId());
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_HR')")
+    @GetMapping("/resume/{id}/addSkill")
+    public ModelAndView addSkill(Principal principal,
+                                 @PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        ResumeDTO resume = resumeService.findById(id);
+        ResumeSkillDTO resumeSkillDTO = new ResumeSkillDTO();
+        resumeSkillDTO.setResume(resume);
+        modelAndView.setViewName("vacancy/chooseSkill");
+
+        modelAndView.addObject("vacancySkillForm", resumeSkillDTO);
+        modelAndView.addObject("skills", skillService.findAll());
+        modelAndView.addObject("levels", levelService.findAll());
+
+        return modelAndView;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/resume/{id}/addSkill")
+    public String addSkill(Model model,
+                           @PathVariable Long id,
+                           @Validated @ModelAttribute("vacancySkillForm") ResumeSkillDTO resumeSkillDTO,
+                           BindingResult bindingResult,
+                           Principal principal) {
+        ResumeDTO resume = resumeService.findById(id);
+        resumeSkillDTO.setResume(resume);
+        resumeSkillService.save(resumeSkillDTO);
+        return redirectTo("resume/"+id);
     }
 
 
@@ -91,9 +132,10 @@ public class ResumeController {
         UserDTO user = userService.findById(id);
         UserDTO currentUser = userService.findByUsername(principal.getName());
         ResumeDTO resume = resumeService.findByUser(user);
-
+        List<ResumeSkillDTO> resumeSkillDTOList = resumeSkillService.findByResume(resume);
+        modelAndView.addObject("resumeSkillsList", resumeSkillDTOList);
         boolean isCurrentUser = false;
-        if(user.getId()==currentUser.getId()){
+        if(user.getId().equals(currentUser.getId())){
             isCurrentUser=true;
         }
 
@@ -154,7 +196,7 @@ public class ResumeController {
         UserDTO user = userService.findByUsername(principal.getName());
 
         modelAndView.addObject("experienceForm", new ExperienceDTO2());
-        modelAndView.addObject("resume", resumeService.findByid(id));
+        modelAndView.addObject("resume", resumeService.findById(id));
         modelAndView.addObject("cities", cityService.findAll());
 
         return modelAndView;
@@ -186,7 +228,7 @@ public class ResumeController {
             experienceDTO.setCurrentJob(false);
         }
 
-        ResumeDTO resumeDTO = resumeService.findByid(id);
+        ResumeDTO resumeDTO = resumeService.findById(id);
         List<ExperienceDTO> experienceList = resumeDTO.getExperiences();
         experienceList.add(experienceDTO);
         resumeDTO.setExperiences(experienceList);

@@ -17,6 +17,6 @@ public class ResumeDTO extends AbstractDTO{
     private LocalDate createDate;
     private CityDTO city;
     private String position;
-    private List<SkillDTO> skills;
+//    private List<SkillDTO> skills;
     private List<ExperienceDTO> experiences;
 }

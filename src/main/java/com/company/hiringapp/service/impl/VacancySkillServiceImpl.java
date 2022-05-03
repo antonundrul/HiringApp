@@ -55,4 +55,9 @@ public class VacancySkillServiceImpl implements VacancySkillService {
         vacancySkillRepository.save(vacancySkillMapper.toEntity(dto));
         return dto;
     }
+
+    @Override
+    public void delete(VacancySkillDTO dto) {
+        vacancySkillRepository.delete(vacancySkillMapper.toEntity(dto));
+    }
 }

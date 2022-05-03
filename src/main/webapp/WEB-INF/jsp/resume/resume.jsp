@@ -25,8 +25,8 @@
     <h4 class="display-4 fw-bold">${resume.position}</h4>
 
     <h6 class="display-6">Ключевые навыки:</h6>
-    <c:forEach var="skill" items="${resume.skills}">
-        ${skill.name}
+    <c:forEach var="a" items="${resumeSkillsList}">
+        ${a.skill.name}(${a.level.name})
     </c:forEach>
 
     <h6 class="display-6">Опыт работы:</h6>
@@ -39,6 +39,7 @@
 
         <c:if test="${isCurrentUser}">
             <a class="btn btn-outline-dark" href="${contextPath}/experiences/add/${resume.user.id}">Добавить опыт работы</a>
+            <a class="btn btn-outline-dark" href="${contextPath}/resume/${resume.user.id}/addSkill">Добавить навык</a>
         </c:if>
 
 

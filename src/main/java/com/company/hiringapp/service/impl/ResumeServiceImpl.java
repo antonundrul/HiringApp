@@ -58,7 +58,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public ResumeDTO findByid(Long id) {
+    public ResumeDTO findById(Long id) {
         Resume resume = resumeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
         return resumeMapper.toDto(resume);
