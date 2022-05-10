@@ -15,7 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import static com.company.hiringapp.controller.ControllerHelper.*;
 
@@ -45,16 +48,18 @@ public class VacancyController {
     private LevelService levelService;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/vacancies")
     public ModelAndView getAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        HashMap<VacancyDTO,List<VacancySkillDTO>> vacancies = new HashMap<>();
-        for (VacancyDTO vacancy : vacancyService.findAll()){
-            vacancies.put(vacancy,vacancySkillService.findByVacancy(vacancy));
+        HashMap<VacancyDTO, List<VacancySkillDTO>> vacancies = new HashMap<>();
+        for (VacancyDTO vacancy : vacancyService.findAll()) {
+            vacancies.put(vacancy, vacancySkillService.findByVacancy(vacancy));
         }
 
-        if(principal!=null) {
+        if (principal != null) {
             UserDTO userDTO = userService.findByUsername(principal.getName());
             modelAndView.addObject("user", userDTO);
         }
@@ -73,7 +78,7 @@ public class VacancyController {
 
 
     @GetMapping("/vacancies/vacancyDetail/{id}")
-    public String vacancyDetail(Model model, @PathVariable(name = "id") Long id,Principal principal) {
+    public String vacancyDetail(Model model, @PathVariable(name = "id") Long id, Principal principal) {
 
         VacancyDTO vacancyDTO = vacancyService.findById(id);
         List<VacancySkillDTO> vacancySkillDTOList = vacancySkillService.findByVacancy(vacancyDTO);
@@ -81,17 +86,14 @@ public class VacancyController {
         model.addAttribute("vacancy", vacancyDTO);
         if (principal != null) {
             model.addAttribute("user", userService.findByUsername(principal.getName()));
-            if(vacancyDTO.getResponses().size()!=0) {
-                for (UserDTO response:vacancyDTO.getResponses()) {
+            if (vacancyDTO.getResponses().size() != 0) {
+                for (UserDTO response : vacancyDTO.getResponses()) {
                     System.out.println(response.getUsername());
                 }
-            }
-            else{
+            } else {
                 System.out.println("Откликов нету");
             }
-        }
-
-        else model.addAttribute("user", new UserDTO());
+        } else model.addAttribute("user", new UserDTO());
 
         return "/vacancy/vacancyDetail";
     }
@@ -99,10 +101,10 @@ public class VacancyController {
     @PreAuthorize("hasRole('ROLE_HR')")
     @GetMapping("/vacancies/{id}/changeStatus")
     public String changeVacancyStatus(@PathVariable(name = "id") Long id,
-                            @RequestParam(required = false) String open,
-                            @RequestParam(required = false) String pause,
-                            @RequestParam(required = false) String cancel,
-                            @RequestParam(required = false) String close) {
+                                      @RequestParam(required = false) String open,
+                                      @RequestParam(required = false) String pause,
+                                      @RequestParam(required = false) String cancel,
+                                      @RequestParam(required = false) String close) {
 
         VacancyDTO vacancyDTO = vacancyService.findById(id);
         if (Objects.nonNull(open)) {
@@ -120,7 +122,25 @@ public class VacancyController {
 
 //        vacancyService.update(vacancyDTO);
         vacancyService.save(vacancyDTO);
-        return redirectTo("vacancies/vacancyDetail/"+id);
+
+
+        String subjectTemplate = "VacancyService77: Вакансия %s изменила статус";
+        String textTemplate = "Добрый день %s %s!\n\nВакансия %s, на которую Вы откликнулись, изменила статус на: %s\nHR-специалист: %s %s, %s\n";
+
+
+        String subject = String.format(subjectTemplate, vacancyDTO.getPosition());
+
+        for (UserDTO user : vacancyDTO.getResponses()) {
+            String text = String.format(textTemplate, user.getFirstName(), user.getLastName(),
+                    vacancyDTO.getPosition(), vacancyDTO.getStatus().name(),
+                    vacancyDTO.getRecruiter().getUser().getFirstName(), vacancyDTO.getRecruiter().getUser().getLastName(),
+                    vacancyDTO.getRecruiter().getCompany().getName());
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, text);
+        }
+
+
+        return redirectTo("vacancies/vacancyDetail/" + id);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -131,8 +151,9 @@ public class VacancyController {
         UserDTO userDTO = userService.findByUsername(principal.getName());
         vacancyService.addResponse(id, userDTO);
 
-        return redirectTo("vacancies/vacancyDetail/"+id);
+        return redirectTo("vacancies/vacancyDetail/" + id);
     }
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping("/vacancies/{id}/unsubscribe")
     public String unsubscribe(@PathVariable(name = "id") Long id,
@@ -141,7 +162,7 @@ public class VacancyController {
         UserDTO userDTO = userService.findByUsername(principal.getName());
         vacancyService.removeResponse(id, userDTO);
 
-        return redirectTo("vacancies/vacancyDetail/"+id);
+        return redirectTo("vacancies/vacancyDetail/" + id);
     }
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -152,11 +173,11 @@ public class VacancyController {
 
         modelAndView.setViewName("vacancy/vacancies");
         UserDTO user = userService.findByUsername(principal.getName());
-        HashMap<VacancyDTO,List<VacancySkillDTO>> vacancies = new HashMap<>();
-        for (VacancyDTO vacancy : vacancyService.myResponses(user)){
-            vacancies.put(vacancy,vacancySkillService.findByVacancy(vacancy));
+        HashMap<VacancyDTO, List<VacancySkillDTO>> vacancies = new HashMap<>();
+        for (VacancyDTO vacancy : vacancyService.myResponses(user)) {
+            vacancies.put(vacancy, vacancySkillService.findByVacancy(vacancy));
         }
-        modelAndView.addObject("vacancies",vacancies );
+        modelAndView.addObject("vacancies", vacancies);
         modelAndView.addObject("user", user);
 
         return modelAndView;
@@ -171,9 +192,9 @@ public class VacancyController {
         modelAndView.setViewName("vacancy/vacancies");
         UserDTO user = userService.findByUsername(principal.getName());
         RecruiterDTO recruiterDTO = recruiterService.findByUser(user);
-        HashMap<VacancyDTO,List<VacancySkillDTO>> vacancies = new HashMap<>();
-        for (VacancyDTO vacancy : vacancyService.findByRecruiter(recruiterDTO)){
-            vacancies.put(vacancy,vacancySkillService.findByVacancy(vacancy));
+        HashMap<VacancyDTO, List<VacancySkillDTO>> vacancies = new HashMap<>();
+        for (VacancyDTO vacancy : vacancyService.findByRecruiter(recruiterDTO)) {
+            vacancies.put(vacancy, vacancySkillService.findByVacancy(vacancy));
         }
 
 
@@ -214,13 +235,13 @@ public class VacancyController {
         vacancyDTO.setStatus(VacancyStatus.OPEN);
         vacancyService.save(vacancyDTO);
 
-        return redirectTo("vacancies/vacancyDetail/"+vacancyService.findAll().get(vacancyService.findAll().size()-1).getId());
+        return redirectTo("vacancies/vacancyDetail/" + vacancyService.findAll().get(vacancyService.findAll().size() - 1).getId());
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_HR')")
     @GetMapping("/vacancies/{id}/addSkill")
     public ModelAndView addSkill(Principal principal,
-                                        @PathVariable Long id) {
+                                 @PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();
 
         VacancyDTO vacancy = vacancyService.findById(id);
@@ -245,7 +266,7 @@ public class VacancyController {
         VacancyDTO vacancy = vacancyService.findById(id);
         vacancySkillDTO.setVacancy(vacancy);
         vacancySkillService.save(vacancySkillDTO);
-        return redirectTo("vacancies/vacancyDetail/"+id);
+        return redirectTo("vacancies/vacancyDetail/" + id);
     }
 
 
@@ -271,7 +292,7 @@ public class VacancyController {
 
         List<ResumeDTO> responsesResume = new ArrayList<>();
 
-        for(UserDTO user: vacancyDTO.getResponses()){
+        for (UserDTO user : vacancyDTO.getResponses()) {
             responsesResume.add(resumeService.findByUser(user));
         }
 
@@ -296,9 +317,9 @@ public class VacancyController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/skills/add")
     public String addSkill(Model model,
-                          @Validated @ModelAttribute("skillForm") SkillDTO dto,
-                          BindingResult result,
-                          Principal principal) {
+                           @Validated @ModelAttribute("skillForm") SkillDTO dto,
+                           BindingResult result,
+                           Principal principal) {
         if (checkBindingResult(result)) {
             model.addAttribute("skillForm", dto);
             return "vacancy/addSkill";
@@ -328,9 +349,9 @@ public class VacancyController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/cities/add")
     public String addCity(Model model,
-                           @Validated @ModelAttribute("cityForm") CityDTO dto,
-                           BindingResult result,
-                           Principal principal) {
+                          @Validated @ModelAttribute("cityForm") CityDTO dto,
+                          BindingResult result,
+                          Principal principal) {
         if (checkBindingResult(result)) {
             model.addAttribute("cityForm", dto);
             return "vacancy/addCity";
@@ -349,16 +370,16 @@ public class VacancyController {
 
     @PostMapping("/vacancies/filter")
     public ModelAndView filter(Model model,
-                          @Validated @ModelAttribute("vacancyFilterForm") VacancyFilterClass dto,
-                          BindingResult result,
-                         Principal principal) {
+                               @Validated @ModelAttribute("vacancyFilterForm") VacancyFilterClass dto,
+                               BindingResult result,
+                               Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
-        HashMap<VacancyDTO,List<VacancySkillDTO>> vacancies = new HashMap<>();
-        for (VacancyDTO vacancy : vacancyService.filter(dto)){
-            vacancies.put(vacancy,vacancySkillService.findByVacancy(vacancy));
+        HashMap<VacancyDTO, List<VacancySkillDTO>> vacancies = new HashMap<>();
+        for (VacancyDTO vacancy : vacancyService.filter(dto)) {
+            vacancies.put(vacancy, vacancySkillService.findByVacancy(vacancy));
         }
 
-        if(principal!=null) {
+        if (principal != null) {
             UserDTO userDTO = userService.findByUsername(principal.getName());
             modelAndView.addObject("user", userDTO);
         }

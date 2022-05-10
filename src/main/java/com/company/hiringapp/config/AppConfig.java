@@ -8,9 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+
+import java.util.Properties;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
@@ -38,14 +42,14 @@ public class AppConfig {
         return mapper;
     }
 
-   /* @Bean
+    @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("siarhei.audzeichyk@gmail.com");
-        mailSender.setPassword("ggnjfowflbrgcfil");
+        mailSender.setUsername("vacancyservice77@gmail.com");
+        mailSender.setPassword("vacancyservice772022");
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");
@@ -54,5 +58,4 @@ public class AppConfig {
 
         return mailSender;
     }
-*/
 }
