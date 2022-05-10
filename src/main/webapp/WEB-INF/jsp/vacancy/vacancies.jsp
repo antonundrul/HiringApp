@@ -16,6 +16,10 @@
 
 
 <main role="main" class="flex-shrink-0 container">
+
+
+
+
             <h2 class="display-4">
                 Вакансии
             </h2>
@@ -29,6 +33,137 @@
                 <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/myVacancies">Мои вакансии</a>
                 <a type="button" class="btn btn-outline-dark" href="${contextPath}/vacancies/addVacancy">Разместить вакансию</a>
                 </sec:authorize>
+                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#demo">Фильтры</button>
+                <div id="demo" class="collapse">
+                    <br>
+                    <form:form method="POST" action="/vacancies/filter" modelAttribute="vacancyFilterForm" enctype="multipart/form-data">
+                       <table style="width: 100%">
+                           <tr>
+                               <td>
+                                   <spring:bind path="position">
+                                           <div class="form-group  ${status.error ? 'has-error' : ''}">
+                                               <form:input  type="text" path="position" class="form-control" placeholder="Должность"
+                                                            autofocus="true"/>
+                                               <form:errors path="position"/>
+                                           </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="city">
+                                           <div class="form-group ${status.error ? 'has-error' : ''}" style="padding-left: 15px">
+                                               <form:select id="city" path="city" class="form-control">
+                                                   <form:option value="0" label="Город"/>
+                                                   <form:options items="${cities}"
+                                                                 itemLabel="name"
+                                                                 itemValue="id"/>
+                                               </form:select>
+                                               <form:errors path="city"/>
+                                           </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="reqExperience">
+                                           <div class="form-group  ${status.error ? 'has-error' : ''}">
+<%--                                               <p path="reqExperience">Опыт</p>--%>
+                                               <form:input  type="nu    mber" path="reqExperience" cssStyle="width: 100px" class="form-control"  placeholder="Опыт"
+                                                            autofocus="true"/>
+                                               <form:errors path="reqExperience"/>
+                                           </div>
+                                   </spring:bind>
+                               </td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <spring:bind path="fromSalary">
+                                       <div class="form-group  ${status.error ? 'has-error' : ''}">
+                                           <p>Заработная плата от</p>
+                                           <form:input  type="number" path="fromSalary" class="form-control" placeholder="Заработная плата"
+                                                        autofocus="true"/>
+                                           <form:errors path="fromSalary"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="toSalary">
+                                       <div class="form-group  ${status.error ? 'has-error' : ''}">
+                                           <p>до</p>
+                                           <form:input  type="number" path="toSalary" class="form-control" placeholder="Заработная плата"
+                                                        autofocus="true"/>
+                                           <form:errors path="toSalary"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="currency">
+                                       <div class="form-group ${status.error ? 'has-error' : ''}">
+                                           <form:select id="currency" path="currency" class="form-control">
+                                               <form:option value="0" label="Валюта"/>
+                                               <form:options items="${currencies}"
+                                                             itemLabel="name"
+                                                             itemValue="id"/>
+                                           </form:select>
+                                           <form:errors path="currency"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                           </tr>
+                           <tr>
+                               <td>
+                                   <spring:bind path="company">
+                                       <div class="form-group ${status.error ? 'has-error' : ''}">
+                                           <form:select id="company" path="company" class="form-control">
+                                               <form:option value="0" label="Компания"/>
+                                               <form:options items="${companies}"
+                                                             itemLabel="name"
+                                                             itemValue="id"/>
+                                           </form:select>
+                                           <form:errors path="company"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="jobType">
+                                       <div class="form-group ${status.error ? 'has-error' : ''}">
+                                           <form:select id="jobType" path="jobType" class="form-control">
+                                               <form:option value="0" label="Тип занятости"/>
+                                               <form:options items="${jobTypes}"
+                                                             itemLabel="name"
+                                                             itemValue="id"/>
+                                           </form:select>
+                                           <form:errors path="jobType"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                               <td>
+                                   <spring:bind path="skills">
+                                       <div class="form-group ${status.error ? 'has-error' : ''}">
+                                           <p>Навыки</p>
+                                           <form:select id="skills" path="skills" multiple="true" >
+                                               <%--                <form:option value="0" label="Навыки"/>--%>
+                                               <form:options items="${skills}"
+                                                             itemLabel="name"
+                                                             itemValue="id"/>
+                                           </form:select>
+                                           <form:errors path="skills"/>
+                                       </div>
+                                   </spring:bind>
+                               </td>
+                           </tr>
+                       </table>
+                        <button class="btn btn-outline-dark" type="submit">Показать подходящие</button>
+                    </form:form>
+                        <%--<spring:bind path="status">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <form:select id="status" path="status" class="form-control">
+                                    <form:option value="0" label="Тип"/>
+                                    <form:options items="${statuses}"
+                                                  itemLabel="name"
+                                                  itemValue="id"/>
+                                </form:select>
+                                <form:errors path="status"/>
+                            </div>
+                        </spring:bind>--%>
+                </div>
             </div>
             <br>
             <br>

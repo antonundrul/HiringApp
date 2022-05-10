@@ -6,6 +6,7 @@ import com.company.hiringapp.entity.Vacancy;
 import com.company.hiringapp.exception.ResourceNotFoundException;
 import com.company.hiringapp.repository.VacancyRepository;
 import com.company.hiringapp.service.VacancyService;
+import com.company.hiringapp.service.VacancySkillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class VacancyServiceImpl implements VacancyService {
     private JobTypeMapper jobTypeMapper;
     @Autowired
     private RecruiterMapper recruiterMapper;
+    @Autowired
+    private VacancySkillService vacancySkillService;
 
     @Override
     public VacancyDTO save(VacancyDTO dto) {
@@ -131,5 +134,47 @@ public class VacancyServiceImpl implements VacancyService {
             }
         }
         return responses;
+    }
+
+    @Override
+    public List<VacancyDTO> filter(VacancyFilterClass vacancyFilter) {
+        List<VacancyDTO> allVacancies = findAll();
+        List<VacancyDTO> resultVacancyList = new ArrayList<>();
+
+
+        for (VacancyDTO currentVacancy : allVacancies){
+            if(currentVacancy.getPosition().contains(vacancyFilter.getPosition()) || vacancyFilter.getPosition() == null) {
+                if ((vacancyFilter.getCity() == null)||(vacancyFilter.getCity().equals(currentVacancy.getCity()))) {
+                    if((vacancyFilter.getReqExperience()==0) || ( vacancyFilter.getReqExperience()<currentVacancy.getReqExperience())) {
+                        if ((vacancyFilter.getJobType() == null) || (vacancyFilter.getJobType().equals(currentVacancy.getJobType()))) {
+                            if ((vacancyFilter.getCompany() == null) || (currentVacancy.getRecruiter().getCompany().equals(vacancyFilter.getCompany()))) {
+                                if ((vacancyFilter.getCurrency() == null) || (vacancyFilter.getCurrency().equals(currentVacancy.getCurrency()))) {
+                                    if ((vacancyFilter.getFromSalary() == 0) || (vacancyFilter.getFromSalary() <= currentVacancy.getSalary())) {
+                                        if ((vacancyFilter.getToSalary() == 0) || (vacancyFilter.getToSalary() >= currentVacancy.getSalary())) {
+                                            if (vacancyFilter.getSkills().size() == 0) {
+                                                resultVacancyList.add(currentVacancy);
+                                            } else {
+                                                List<VacancySkillDTO> currentVacancySkills = vacancySkillService.findByVacancy(currentVacancy);
+                                                List<SkillDTO> currentSkills = new ArrayList<>();
+                                                for (VacancySkillDTO vacancySkill : currentVacancySkills) {
+                                                    currentSkills.add(vacancySkill.getSkill());
+                                                }
+                                                if (currentSkills.containsAll(vacancyFilter.getSkills())) {
+                                                    resultVacancyList.add(currentVacancy);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return resultVacancyList;
     }
 }
